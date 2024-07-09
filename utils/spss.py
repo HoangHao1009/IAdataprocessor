@@ -35,7 +35,7 @@ def value_label(question, label_dict):
     lable = ''
     for i, v in label_dict.items():
         lable += f'{i} "{v}"\n'
-    return f'VALUE LABELS {question} {lable.rstrip('\n')}.'
+    return f"VALUE LABELS {question} {lable.rstrip('\n')}."
 
 def mrset(question, question_label, list_answer):
     return f'''
