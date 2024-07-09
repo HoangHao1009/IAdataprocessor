@@ -143,7 +143,7 @@ def get_SPSS_syntax(question_json=list):
                 a_label = f'{q_text}_{a_text}'
 
                 var_label_command = var_label(a_code, a_label)
-                value_label_command = value_label_command(a_code, {1: a_text})
+                value_label_command = value_label(a_code, {1: a_text})
                 SPSS_syntax += [var_label_command, value_label_command]
 
                 a_list.append(a_code)
