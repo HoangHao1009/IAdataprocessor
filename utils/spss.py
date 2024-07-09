@@ -186,4 +186,4 @@ def get_SPSS_syntax(question_json=list):
                 SPSS_syntax += [var_label_command, value_label_command]
                 SPSS_question.append(a_code)
 
-        return SPSS_syntax, SPSS_question
+    return SPSS_syntax, SPSS_question
