@@ -32,10 +32,11 @@ def var_label(question, label):
     return f'VARIABLE LABELS {question} "{label}".'
 
 def value_label(question, label_dict):
-    lable = ''
+    label = ''
     for i, v in label_dict.items():
-        lable += f'{i} "{v}"\n'
-    return f"VALUE LABELS {question} {lable.rstrip('\n')}."
+        label += f'{i} "{v}"\n'
+    label = label.rstrip('\n')
+    return f"VALUE LABELS {question} {label}."
 
 def mrset(question, question_label, list_answer):
     return f'''
@@ -62,7 +63,7 @@ def ctab(cols, calc_type=dict, comparetest_type=["MEAN"], alpha=0.1):
         return code.rstrip(' + \n')
     
     def by_code(cols):
-        return f'BY + {' + '.join(cols)}'
+        return 'BY' + ' + '.join(cols)
     
     def compare_code(comparetest_type, alpha):
         code = '/COMPARE'
