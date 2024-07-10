@@ -1,3 +1,4 @@
+from utils import function
 
 def delete(question, delete_list, max_length=80):
     filter_condition = []
@@ -24,7 +25,7 @@ def var_label(question, label):
 def value_label(question, label_dict):
     label = ''
     for i, v in label_dict.items():
-        label += f'{i} "{v}"\n'
+        label += f'{i} "{function.parse_html(v)}"\n'
     label = label.rstrip('\n')
     return f"VALUE LABELS {question} {label}."
 

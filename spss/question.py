@@ -40,7 +40,7 @@ class sa(question):
         for index, answer in enumerate(self.options):
             index = index + 1
             o_text = answer['text']
-            value_label_dict[index+1] = function.parse_html(o_text)
+            value_label_dict[index+1] = o_text
         self.value_label_command.append(syntax.value_label(self.q_code, value_label_dict))
 
         self.commands.extend(self.var_label_command + self.var_label_command)
@@ -53,7 +53,7 @@ class ma(question):
         
         for index, answer in enumerate(self.options):
             index = index + 1
-            o_text = function.parse_html(answer['text'])
+            o_text = answer['text']
             o_code = f'{self.q_code}A{index}'
             o_label = f'{self.q_text}_{o_text}'
 
@@ -73,7 +73,7 @@ class rank(question):
         
         value_label_dict = {}
         for index, answer in enumerate(self.options):
-            o_text = function.parse_html(answer['text'])
+            o_text = answer['text']
             index = index + 1
             o_code = f'{self.q_code}RANK{index}'
             o_label = f'{self.q_text}_RANK{index}'
@@ -96,7 +96,7 @@ class matrix(question):
 
         for index, row in enumerate(self.options):
             value_label_dict = {}
-            r_text = function.parse_html(row['text'])
+            r_text = row['text']
             index = index + 1
             o_code = f'{self.q_code}R{index}'
             o_label = f'{self.q_text}_{r_text}'
@@ -106,7 +106,7 @@ class matrix(question):
 
             for col_index, column in enumerate(row['columns']):
                 col_index = col_index + 1
-                col_text = function.parse_html(column['text'])
+                col_text = column['text']
                 value_label_dict[col_index] = col_text
             self.value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
