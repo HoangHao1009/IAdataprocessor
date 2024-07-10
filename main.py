@@ -1,5 +1,5 @@
 from utils import function
-from . import spss
+import spss
 
 class Processor:
     def __init__(self, api_key, env, survey_id):
