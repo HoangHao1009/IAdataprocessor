@@ -37,11 +37,15 @@ def custom_sort(item, priority_list=[]):
     parts = re.findall(r'([A-Z]+)(\d+)?', item)
 
     key = []
+
+    if parts[0][0]:
+        if parts[0][0] not in priority_list:
+            print(f'{parts[0][0]} not in block order')
+
     for letter, number in parts:
         if letter in priority_list:
             key.append(priority_list.index(letter))
         else:
-            print(f'{letter} not in block order')
             key.append(len(priority_list))
         if number:
             key.append(int(number))
