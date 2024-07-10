@@ -1,21 +1,6 @@
 from . import syntax
 from utils import function
 
-origin_question = {
-    'SA': [],
-    'MA': [],
-    'R': [],
-    'T': [],
-    'N': [],
-}
-spss_question = {
-    'SA': [],
-    'MA': [],
-    'R': [],
-    'T': [],
-    'N': [],
-}
-
 def take_qinfo(info):
     q_type, q_code, q_text = info['type'], info['code'], info['text']
     try:
@@ -28,19 +13,26 @@ def take_qinfo(info):
             options = None
 
     return q_type, q_code, q_text, options
-    
 
-class sa:
+class question:
     def __init__(self, info):
+        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
         self.var_label_command = []
         self.value_label_command = []
+        self.json = info
+        self.mrset_command = []
+        self.commands = []
+        self.option_codes = []
 
-        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
+    def get_option_codes(self):
+        return sorted(self.option_codes, function.custom_sort)
+
+class sa(question):
+    def __init__(self, info):
+        super().__init__(info)
 
         if self.q_type != 'multiplechoice_radio':
             raise ValueError(f'Question {self.q_type} is not a SA')
-
-        self.json = info
 
         self.var_label_command.append(syntax.var_label(self.q_code, self.q_text))
 
@@ -51,19 +43,11 @@ class sa:
             value_label_dict[index+1] = function.parse_html(o_text)
         self.value_label_command.append(syntax.value_label(self.q_code, value_label_dict))
 
+        self.commands.extend(self.var_label_command + self.var_label_command)
 
-        self.commands = self.var_label_command + self.var_label_command
-        origin_question['SA'].append(self.q_code)
-        spss_question['SA'].append(self.q_code)
-
-class ma:
+class ma(question):
     def __init__(self, info):
-        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
-        self.var_label_command = []
-        self.value_label_command = []
-        self.mrset_command = []
-        self.option_codes = []
-
+        super().__init__(info)
         if self.q_type != 'multiplechoice_checkbox':
             raise ValueError(f'Question {self.q_type} is not a MA')
         
@@ -78,18 +62,11 @@ class ma:
 
             self.option_codes.append(o_code)
         self.mrset_command.append(syntax.mrset(o_code, o_text, self.option_codes))
-        self.commands = self.var_label_command + self.value_label_command + self.mrset_command
+        self.commands.extend(self.var_label_command + self.value_label_command + self.mrset_command)
 
-        origin_question['MA'].append(self.q_code)
-        spss_question['MA'] += self.option_codes
-
-class rank:
+class rank(question):
     def __init__(self, info):
-        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
-        self.var_label_command = []
-        self.value_label_command = []
-        self.option_codes = []
-
+        super().__init__(info)
 
         if self.q_type != 'rank_order_dropdown':
             raise ValueError(f'Question {self.q_type} is not a RANK')
@@ -108,17 +85,14 @@ class rank:
         for a_code in self.option_codes:
             self.value_label_command.append(syntax.value_label(a_code, value_label_dict))
 
-        self.commands = self.var_label_command + self.value_label_command
+        self.commands.extend(self.var_label_command + self.value_label_command)
         
-        origin_question['R'].append(self.q_code)
-        spss_question['R'] += self.option_codes
-
-class matrix:
+class matrix(question):
     def __init__(self, info):
-        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
-        self.var_label_command = []
-        self.value_label_command = []
-        self.option_codes = []
+        super().__init__(info)
+
+        if self.q_type != 'matrix_radio':
+            raise ValueError(f'Question {self.q_type} is not a RANK')
 
         for index, row in enumerate(self.options):
             value_label_dict = {}
@@ -136,10 +110,7 @@ class matrix:
                 value_label_dict[col_index] = col_text
             self.value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
-            self.commands = self.var_label_command + self.value_label_command
-
-            origin_question['R'].append(self.q_code)
-            spss_question['R'] += self.option_codes
+            self.commands.extend(self.var_label_command + self.value_label_command)
 
 class text:
     pass

@@ -1,55 +1,48 @@
 from utils import function
-from utils import spss
+from . import spss
 
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = function.getjson(api_key, env, survey_id)
-        self.SPSS_syntax, self.SPSS_quesion = spss.get_SPSS_syntax(self.question_json)
-        # self.topbottom_question = []
-        # self.scale_question = []
+        self.origin_question = {'SA': [], 'MA': [], 'R': [], 'T': [],'N': []}
+        self.spss_question = {'SA': [], 'MA': [], 'R': [], 'T': [],'N': []}
+        self.question_objects = []
 
-    
-
-    # def all_question(self, block_order):
-    #     self.block_order = block_order
-    #     all_question = []
-    #     for type, question_list in self.SPSS_quesion.items():
-    #         all_question += question_list
-    #     return sorted(
-    #         all_question,
-    #         key = lambda item: function.custom_sort(item, block_order)
-    #     )
-
-    # def add_SPSS_question(self, question, type):
-    #     if self.block_order:
-    #         self.SPSS_question[type] = sorted(
-    #             self.SPSS_quesion[type].append(question),
-    #             key = function.custom_sort
-    #         )
-    #     else:
-    #         self.SPSS_question[type] = self.SPSS_question[type].append(question)
-
-    # def add_SPSS_syntax(self, syntax, pre=True):
-    #     if pre:
-    #         self.SPSS_syntax = syntax + self.SPSS_syntax
-    #     else:
-    #         self.SPSS_syntax += syntax
-
-
-    # def create_topbottom(self, question_list, type='1-5'):
-    #     for question in question_list:
-    #         if question not in self.SPSS_question:
-    #             raise ValueError('Question not in SPSS Question List')
+    def get_SPSS(self):
+        for question in self.question_json:
+            q_type = question['type']
+            if q_type == 'multiplechoice_radio':
+                q_obj = spss.sa(question)
+                self.origin_question['SA'].append(q_obj.q_code)
+                self.spss_question['SA'].append(q_obj.q_code)
             
-    #         self.SPSS_syntax.append(spss.compute_topbottom(question, type))
-    #         self.topbottom_question.append(question)
-    #         self.add_SPSS_question(question)
+            elif q_type == 'multiplechoice_checkbox':
+                q_obj = spss.ma(question)
+                self.origin_question['MA'].append(q_obj.q_code)
+                self.spss_question['MA'].extend(q_obj.option_codes)
 
-    # def create_scale(self, question_list):
-    #     for question in question_list:
-    #         if question not in self.SPSS_question:
-    #             raise ValueError('Question not in SPSS Question List')
-    #         self.SPSS_syntax.append(spss.compute_scale(question))
-    #         self.scale_question.append(question)
-    #         self.add_SPSS_question(question)
+            elif q_type == 'rank_order_dropdown':
+                q_obj = spss.rank(question)
+                self.origin_question['R'].append(q_obj.q_code)
+                self.spss_question['R'].extend(q_obj.option_codes)
 
+            elif q_type == 'matrix_radio':
+                q_obj = spss.matrix(question)
+                self.origin_question['R'].append(q_obj.q_code)
+                self.spss_question['R'].extend(q_obj.option_codes)
+
+            #T and N
+            self.question_objects.append(q_obj)
+
+    def get_all_question_code(self, block_order):
+        result = []
+        for type, question_list in self.spss_question:
+            result.extend(question_list)
+        return sorted(result, key=lambda item: function.custom_sort(item, block_order))
+
+    def get_all_command(self):
+        commands = []
+        for q_obj in self.question_objects:
+            commands.extend(q_obj.commands)
+        return commands
+        
