@@ -36,7 +36,7 @@ class Processor:
 
     def get_all_question_code(self, block_order):
         result = []
-        for type, question_list in self.spss_question:
+        for type, question_list in self.spss_question.items():
             result.extend(question_list)
         return sorted(result, key=lambda item: function.custom_sort(item, block_order))
 
