@@ -46,3 +46,4 @@ class Processor:
             commands.extend(q_obj.commands)
         return commands
         
+    #topbottom, mean, std, ctab
