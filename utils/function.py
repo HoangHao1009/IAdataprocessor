@@ -13,24 +13,43 @@ def getjson(api_key, env, survey_id):
 
 
 def custom_sort(item, priority_list):
-    # Loại bỏ ký tự '$'
-    item = item.lstrip('$')
+    # # Loại bỏ ký tự '$'
+    # item = item.lstrip('$')
 
-    # Tìm vị trí của chữ số đầu tiên
-    match = re.search(r'\d+', item)
-    if match:
-        # Tách phần chữ cái và phần số
-        prefix = item[:match.start()]
-        number = int(match.group())
+    # # Tìm vị trí của chữ số đầu tiên
+    # match = re.search(r'\d+', item)
+    # if match:
+    #     # Tách phần chữ cái và phần số
+    #     prefix = item[:match.start()]
+    #     number = int(match.group())
 
-        # Lấy thứ tự ưu tiên của phần chữ cái từ priority_list
-        prefix_priority = priority_list.index(prefix) if prefix in priority_list else len(priority_list)
+    #     # Lấy thứ tự ưu tiên của phần chữ cái từ priority_list
+    #     prefix_priority = priority_list.index(prefix) if prefix in priority_list else len(priority_list)
 
-        # Trả về tuple (thứ tự ưu tiên, số)
-        return prefix_priority, number
-    else:
-        # Nếu không có số, trả về phần chữ cái và 0
-        return priority_list.index(item) if item in priority_list else len(priority_list), 0
+    #     # Trả về tuple (thứ tự ưu tiên, số)
+    #     return prefix_priority, number
+    # else:
+    #     # Nếu không có số, trả về phần chữ cái và 0
+    #     return priority_list.index(item) if item in priority_list else len(priority_list), 0
+
+    item = item.lstrip('$').upper()
+
+    parts = re.findall()
+
+    key = []
+    for letter, number in parts:
+        if letter in priority_list:
+            key.append(priority_list.index(letter))
+        else:
+            print(f'{letter} not in block order')
+            key.append(len(priority_list))
+        if number:
+            key.append(int(number))
+    
+    return key
+
+
+
     
 def parse_html(text):
     if '<' in text and '>' in text:

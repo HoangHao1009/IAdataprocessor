@@ -82,20 +82,40 @@ CTABLES
 {compare_code(comparetest_type)}.
 '''
 
-def compute_topbottom(question):
-    question_tb = f'{question}1TB'
+def compute_topbottom(question, fr=1, to=5):
+
+    new_question = f'{question}TB'
+    def take_command(fr, to):
+        if fr == 1 and to == 5:
+            if_command = f'''
+IF ({question} = 1 OR {question} = 2) {new_question} = 1.
+IF ({question} = 3) {question_code} = 2.
+IF ({question} = 4 OR {question} = 5) {new_question} = 3.
+    '''
+            value_label_command = function.value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
+        elif fr == 1 and to == 10:
+            if_command = f'''
+IF ({question} = 1 OR {question} = 2 OR {question} = 3 OR {question} = 4 OR {question} = 5) {new_question} = 1.
+IF ({question} = 6 OR {question} = 7) {new_question} = 2.
+IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
+    '''
+            value_label_command = function.value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
+        return if_command, value_label_command
+
+    if_command, value_label_command = take_command(fr, to)
+
     return f'''
-COMPUTE {question_tb} = 0.
-IF ({question} = 1 OR {question} = 2) {question_tb} = 1.
-IF ({question} = 3) {question_tb} = 2.
-IF ({question} = 4 OR {question} = 5) {question_tb} = 3.
-{var_label(question_tb, f'{question}. Top to Bottom Boxes')}
-{value_label(question_tb, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})}
+COMPUTE {question} = 0.
+{if_command}
+{function.var_label(new_question, f'{question} - Top to Bottom Boxes')}
+{value_label_command}
 EXECUTE.
 '''
 
+
+
 def compute_scale(question):
-    question_scale = f'{question}1S'
+    question_scale = f'{question}S'
     return f'''
 COMPUTE {question_scale} = {question}.
 VARIABLE LEVEL {question_scale} (SCALE).

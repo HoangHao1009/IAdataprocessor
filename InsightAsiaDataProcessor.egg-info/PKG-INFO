@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: InsightAsiaDataProcessor
+Version: 0.1
+Summary: Auto Generate SPSS syntax
+Author: Ha Hoang Hao
+Requires-Dist: re
+Requires-Dist: requests
+Requires-Dist: bs4
+Requires-Dist: pandas
