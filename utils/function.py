@@ -34,7 +34,7 @@ def custom_sort(item, priority_list=[]):
 
     item = item.lstrip('$').upper()
 
-    parts = re.findall()
+    parts = re.findall(r'([A-Z]+)(\d+)?', item)
 
     key = []
     for letter, number in parts:
