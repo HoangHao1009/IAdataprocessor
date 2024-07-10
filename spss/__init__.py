@@ -1,7 +1,7 @@
 from utils import function
 
-import syntax
+from . import syntax
 
-import question
+from . import question
 
 from question import sa, ma, rank, matrix, text, numeric
