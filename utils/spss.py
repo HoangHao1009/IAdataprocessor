@@ -82,18 +82,18 @@ CTABLES
 {compare_code(comparetest_type)}.
 '''
 
-def compute_topbottom(question, fr=1, to=5):
+def compute_topbottom(question, type = '1-5'):
 
     new_question = f'{question}TB'
     def take_command(fr, to):
-        if fr == 1 and to == 5:
+        if type == '1-5':
             if_command = f'''
 IF ({question} = 1 OR {question} = 2) {new_question} = 1.
 IF ({question} = 3) {question} = 2.
 IF ({question} = 4 OR {question} = 5) {new_question} = 3.
     '''
             value_label_command = function.value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
-        elif fr == 1 and to == 10:
+        elif type == '1-10':
             if_command = f'''
 IF ({question} = 1 OR {question} = 2 OR {question} = 3 OR {question} = 4 OR {question} = 5) {new_question} = 1.
 IF ({question} = 6 OR {question} = 7) {new_question} = 2.
@@ -134,7 +134,18 @@ OUTPUT EXPORT
 
 def get_SPSS_syntax(question_json=list):
     SPSS_syntax = []
-    SPSS_question = []
+    SPSS_question = {
+        'SA': [],
+        'MA': [],
+        'MA_recode': [],
+        'R': [],
+        'R_recode': [],
+        'S': [],
+        'S_recode': [],
+        'TB_recode': [],
+        'MT': [],
+        'MT_recode': []
+    }
     for question in question_json:
         q_type, q_code  = question['type'], question['code']
         q_text = function.parse_html(question['text']).split('?')[0]
@@ -155,7 +166,7 @@ def get_SPSS_syntax(question_json=list):
                 value_label_dict[index+1] = function.parse_html(a_text)
             value_label_command = value_label(q_code, value_label_dict)
 
-            SPSS_question.append(q_code)
+            SPSS_question['SA'].append(q_code)
             SPSS_syntax += [var_label_command, value_label_command]
 
         elif q_type in question_type['MA']:
@@ -169,11 +180,12 @@ def get_SPSS_syntax(question_json=list):
                 var_label_command = var_label(a_code, a_label)
                 value_label_command = value_label(a_code, {1: a_text})
                 SPSS_syntax += [var_label_command, value_label_command]
+                SPSS_question['MA_recode'].append(a_code)
 
                 a_list.append(a_code)
             mrset_command = mrset(q_code, q_text, a_list)
             SPSS_syntax.append(mrset_command)
-            SPSS_question.append(a_code)
+            SPSS_question['MA'].append(q_code)
 
         elif q_type in question_type['R']:
             a_list = []
@@ -191,8 +203,9 @@ def get_SPSS_syntax(question_json=list):
 
             for a_code in a_list:
                 value_label_command = value_label(a_code, value_label_dict)
-                SPSS_question.append(a_code)
+                SPSS_question['R_recode'].append(a_code)
                 SPSS_syntax.append(var_label_command)
+            SPSS_question['R'].append(q_code)
         
         elif q_type in question_type['MT']:
             for index, row in enumerate(q_row):
@@ -208,6 +221,7 @@ def get_SPSS_syntax(question_json=list):
                     col_text = function.parse_html(column['text'])
                     value_label_dict[col_index] = col_text
                 SPSS_syntax += [var_label_command, value_label_command]
-                SPSS_question.append(a_code)
+                SPSS_question['MT_recode'].append(a_code)
+            SPSS_question['MT'].append(q_code)
 
     return SPSS_syntax, SPSS_question

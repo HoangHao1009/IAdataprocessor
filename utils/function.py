@@ -12,7 +12,7 @@ def getjson(api_key, env, survey_id):
     return requests.request("GET", question_url , headers=headers, data=payload).json()['response']
 
 
-def custom_sort(item, priority_list):
+def custom_sort(item, priority_list=[]):
     # # Loại bỏ ký tự '$'
     # item = item.lstrip('$')
 
