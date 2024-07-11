@@ -1,4 +1,4 @@
-from . import utils
+from .spss import utils
 import spss
 
 class Processor:
