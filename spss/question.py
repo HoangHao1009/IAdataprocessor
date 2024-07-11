@@ -1,5 +1,5 @@
 from . import syntax
-from utils import function
+from . import utils
 
 def take_qinfo(info):
     q_type, q_code, q_text = info['type'], info['code'], info['text']
@@ -25,7 +25,7 @@ class question:
         self.option_codes = []
 
     def get_option_codes(self):
-        return sorted(self.option_codes, function.custom_sort)
+        return sorted(self.option_codes, utils.custom_sort)
 
 class sa(question):
     def __init__(self, info):

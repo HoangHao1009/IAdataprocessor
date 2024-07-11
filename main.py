@@ -1,9 +1,9 @@
-from utils import function
+from . import utils
 import spss
 
 class Processor:
     def __init__(self, api_key, env, survey_id):
-        self.question_json = function.getjson(api_key, env, survey_id)
+        self.question_json = utils.getjson(api_key, env, survey_id)
         self.origin_question = {'SA': [], 'MA': [], 'R': [], 'T': [],'N': []}
         self.spss_question = {'SA': [], 'MA': [], 'R': [], 'T': [],'N': []}
         self.question_objects = []
@@ -38,7 +38,7 @@ class Processor:
         result = []
         for type, question_list in self.spss_question.items():
             result.extend(question_list)
-        return sorted(result, key=lambda item: function.custom_sort(item, block_order))
+        return sorted(result, key=lambda item: utils.custom_sort(item, block_order))
 
     def get_all_command(self):
         commands = []

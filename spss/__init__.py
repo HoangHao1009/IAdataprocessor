@@ -1,4 +1,4 @@
-from utils import function
+from . import utils
 
 from . import syntax
 

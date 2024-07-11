@@ -1,4 +1,4 @@
-from utils import function
+from . import utils
 
 def delete(question, delete_list, max_length=80):
     filter_condition = []
@@ -25,7 +25,7 @@ def var_label(question, label):
 def value_label(question, label_dict):
     label = ''
     for i, v in label_dict.items():
-        label += f'{i} "{function.parse_html(v)}"\n'
+        label += f'{i} "{utils.parse_html(v)}"\n'
     label = label.rstrip('\n')
     return f"VALUE LABELS {question} {label}."
 
@@ -83,14 +83,14 @@ IF ({question} = 1 OR {question} = 2) {new_question} = 1.
 IF ({question} = 3) {question} = 2.
 IF ({question} = 4 OR {question} = 5) {new_question} = 3.
     '''
-            value_label_command = function.value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
+            value_label_command = utils.value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
         elif type == '1-10':
             if_command = f'''
 IF ({question} = 1 OR {question} = 2 OR {question} = 3 OR {question} = 4 OR {question} = 5) {new_question} = 1.
 IF ({question} = 6 OR {question} = 7) {new_question} = 2.
 IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     '''
-            value_label_command = function.value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
+            value_label_command = utils.value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
         return if_command, value_label_command
 
     if_command, value_label_command = take_command(type)
@@ -98,7 +98,7 @@ IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     return f'''
 COMPUTE {question} = 0.
 {if_command}
-{function.var_label(new_question, f'{question} - Top to Bottom Boxes')}
+{utils.var_label(new_question, f'{question} - Top to Bottom Boxes')}
 {value_label_command}
 EXECUTE.
 '''
