@@ -6,5 +6,5 @@ setup(
   author = 'Ha Hoang Hao',
   packages = find_packages(),
   description = 'Auto Generate SPSS syntax',
-  install_requires = ['re>=2.2.1', 'requests', 'bs4', 'pandas']
+  install_requires = ['requests', 'bs4', 'pandas']
 )
