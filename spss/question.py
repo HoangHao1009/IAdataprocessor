@@ -38,7 +38,7 @@ class sa(question):
         value_label_dict = {}
         for index, answer in enumerate(self.options):
             index = index + 1
-            o_text = answer['text']
+            o_text = utils.parse_html(answer['text'])
             value_label_dict[index] = o_text
         value_label_command = syntax.value_label(self.q_code, value_label_dict)
 
@@ -114,7 +114,7 @@ class matrix(question):
 
         for index, row in enumerate(self.options):
             value_label_dict = {}
-            r_text = row['text']
+            r_text = utils.parse_html(row['text'])
             index = index + 1
             o_code = f'{self.q_code}R{index}'
             o_label = f'{self.q_text}_{r_text}'
@@ -124,7 +124,7 @@ class matrix(question):
 
             for col_index, column in enumerate(row['columns']):
                 col_index = col_index + 1
-                col_text = column['text']
+                col_text = utils.parse_html(column['text'])
                 value_label_dict[col_index] = col_text
             value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
