@@ -70,7 +70,7 @@ class ma(question):
             value_label_command.append(syntax.value_label(o_code, {1: o_text}))
 
             self.option_codes.append(o_code)
-        mrset_command = syntax.mrset(o_code, o_text, self.option_codes)
+        mrset_command = syntax.mrset(f'${self.q_code}', self.q_text, self.option_codes)
         self.commands.extend(var_label_command)
         self.commands.extend(value_label_command)
         self.commands.append(mrset_command)
