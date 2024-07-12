@@ -83,14 +83,14 @@ IF ({question} = 1 OR {question} = 2) {new_question} = 1.
 IF ({question} = 3) {question} = 2.
 IF ({question} = 4 OR {question} = 5) {new_question} = 3.
     '''
-            value_label_command = utils.value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
+            value_label_command = value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
         elif type == '1-10':
             if_command = f'''
 IF ({question} = 1 OR {question} = 2 OR {question} = 3 OR {question} = 4 OR {question} = 5) {new_question} = 1.
 IF ({question} = 6 OR {question} = 7) {new_question} = 2.
 IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     '''
-            value_label_command = utils.value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
+            value_label_command = value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
         command = if_command, value_label_command
 
         return command
