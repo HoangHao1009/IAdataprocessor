@@ -31,22 +31,20 @@ class Processor:
             #T and N
             self.question_objects.append(q_obj)
 
-    def get_question_code(self, block_order, spss=True):
-        def custom_extend(result_list, item, key=True):
+    def get_question_code(self, block_order):
+        def custom_extend(result_list, item):
             if isinstance(item, list):
                 result_list.extend(item)
             else:
-                if key == True:
-                    for v in item.values():
-                        result_list.extend(v)
-                else:
-                    for v in item.keys():
-                        result_list.append(v)
+                for v in item.values():
+                    result_list.extend(v)
             return result_list
         result = []
         for q_type, value in self.spss_question.items():
-            if q_type in ['SA', 'MA', 'MT', 'R', 'TB_S']:
-                result = custom_extend(result, value, spss)
+            if q_type in ['SA', 'MT', 'R', 'TB_S']:
+                result = custom_extend(result)
+            elif q_type == 'MA':    
+                result.extend(value.keys())    
 
         return sorted(result, key=lambda item: utils.custom_sort(item, block_order))
     
