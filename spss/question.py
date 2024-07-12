@@ -2,17 +2,20 @@ from . import syntax
 from . import utils
 
 def take_qinfo(info):
-    q_type, q_code, q_text = info['type'], info['code'], info['text']
     try:
-        options = info['answers']
-    except:
+        q_type, q_code, q_text = info['type'], info['code'], info['text']
         try:
-            options = info['rows']
+            options = info['answers']
         except:
-            print(f'{q_code} has no options')
-            options = None
+            try:
+                options = info['rows']
+            except:
+                print(f'{q_code} has no options')
+                options = None
 
-    q_text = utils.parse_html(q_text)
+        q_text = utils.parse_html(q_text)
+    except:
+        q_type, q_code, q_text, options = None, None, None, None
 
     return q_type, q_code, q_text, options
 

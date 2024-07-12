@@ -36,10 +36,10 @@ class Processor:
 
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
+            else:
+                q_obj = question(question)
 
-            result.append(q_obj)
         self.question_objects = result
-        return result
 
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
