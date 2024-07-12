@@ -32,6 +32,7 @@ class Processor:
 
             result.append(q_obj)
         self.question_objects = result
+        return result
 
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
