@@ -34,6 +34,8 @@ class Processor:
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
             #T and N
+            if question['text'] == q_obj.q_text:
+                print(f'{question['code']} already exist')
             self.question_objects.append(q_obj)
 
     def get_question_code(self, block_order):
