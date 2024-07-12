@@ -37,7 +37,7 @@ class Processor:
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
             else:
-                q_obj = question(question)
+                q_obj = spss.question(question)
             result.append(q_obj)
 
         self.question_objects = result
