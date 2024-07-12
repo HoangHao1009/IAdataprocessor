@@ -88,5 +88,5 @@ class Processor:
                 if col_perc:
                     result[question] = ['ColPct']
                 else:
-                    result['question'] = ['Mean']
+                    result['question'] = ['Count']
         return result
