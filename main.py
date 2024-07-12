@@ -14,19 +14,26 @@ class Processor:
         for question in self.question_json:
             q_type = question['type']
             if q_type == 'multiplechoice_radio':
-                q_obj = spss.sa(question)                
+                q_obj = spss.sa(question)
+                print(q_obj.q_code)             
                 self.spss_question['SA'].append(q_obj.q_code)
             
             elif q_type == 'multiplechoice_checkbox':
                 q_obj = spss.ma(question)
+                print(q_obj.q_code)             
+
                 self.spss_question['MA'][f'${q_obj.q_code}'] = q_obj.option_codes
 
             elif q_type == 'rank_order_dropdown':
                 q_obj = spss.rank(question)
+                print(q_obj.q_code)             
+
                 self.spss_question['R'][q_obj.q_code] = q_obj.option_codes
 
             elif q_type == 'matrix_radio':
                 q_obj = spss.matrix(question)
+                print(q_obj.q_code)             
+
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
 
