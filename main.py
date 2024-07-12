@@ -14,6 +14,7 @@ class Processor:
             q_type = question['type']
             if q_type == 'multiplechoice_radio':
                 q_obj = spss.sa(question)
+                print(q_obj.q_code)
                 
                 if question['code'] in self.spss_question['SA']:
                     print(f'{q_obj.q_code} Already exist')
