@@ -134,7 +134,7 @@ class matrix(question):
         new_questions = []
         syntaxs = []
         for i in self.option_codes:
-            q, s = syntax.compute_topbottom(self.q_code, topbottom_scale)
+            q, s = syntax.compute_topbottom(i, topbottom_scale)
             new_questions.append(q)
             syntaxs.append(s)
         return new_questions, syntaxs
@@ -143,7 +143,7 @@ class matrix(question):
         new_questions = []
         syntaxs = []
         for i in self.option_codes:
-            q, s = syntax.compute_scale(self.q_code, type)
+            q, s = syntax.compute_scale(i, type)
             new_questions.append(q)
             syntaxs.append(s)
         return new_questions, syntaxs
