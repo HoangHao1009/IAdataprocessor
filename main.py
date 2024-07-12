@@ -6,16 +6,15 @@ class Processor:
         self.question_json = utils.getjson(api_key, env, survey_id)
         self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [],
                               'MA': {}, 'R': {}, 'MT': {}}
-        self.question_objects = []
+        self.question_objects = None
         self.commands = []
 
     def get_SPSS(self):
+        result = []
         for question in self.question_json:
             q_type = question['type']
             if q_type == 'multiplechoice_radio':
-                q_obj = spss.sa(question)
-                print(q_obj.q_code)
-                
+                q_obj = spss.sa(question)                
                 self.spss_question['SA'].append(q_obj.q_code)
             
             elif q_type == 'multiplechoice_checkbox':
@@ -31,7 +30,8 @@ class Processor:
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
 
-            self.question_objects.append(q_obj)
+            result.append(q_obj)
+        self.question_objects = result
 
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
