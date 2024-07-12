@@ -7,10 +7,12 @@ def take_qinfo(info):
         options = info['answers']
     except:
         try:
-            options = info['rows']
+            options = utils.parse_html(info['rows'])
         except:
             print(f'{q_code} has no options')
             options = None
+
+    q_code = utils.parse_html(q_code)
 
     return q_type, q_code, q_text, options
 
