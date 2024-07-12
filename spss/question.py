@@ -62,7 +62,7 @@ class ma(question):
         
         for index, answer in enumerate(self.options):
             index = index + 1
-            o_text = answer['text']
+            o_text = utils.parse_html(answer['text'])
             o_code = f'{self.q_code}A{index}'
             o_label = f'{self.q_text}_{o_text}'
 
