@@ -7,12 +7,12 @@ def take_qinfo(info):
         options = info['answers']
     except:
         try:
-            options = utils.parse_html(info['rows'])
+            options = info['rows']
         except:
             print(f'{q_code} has no options')
             options = None
 
-    q_code = utils.parse_html(q_code)
+    q_text = utils.parse_html(q_text)
 
     return q_type, q_code, q_text, options
 
@@ -86,7 +86,7 @@ class rank(question):
         
         value_label_dict = {}
         for index, answer in enumerate(self.options):
-            o_text = answer['text']
+            o_text = utils.parse_html(answer['text'])
             index = index + 1
             o_code = f'{self.q_code}RANK{index}'
             o_label = f'{self.q_text}_RANK{index}'
