@@ -125,7 +125,7 @@ class matrix(question):
                 value_label_dict[col_index] = col_text
             value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
-            self.commands.extend(self.var_label_command + self.value_label_command)
+            self.commands.extend(var_label_command + value_label_command)
 
 class text:
     pass
