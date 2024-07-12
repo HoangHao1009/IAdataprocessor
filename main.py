@@ -61,9 +61,9 @@ class Processor:
         for q_obj in self.question_objects:
             if q_obj.q_code in question_list:
                 if isinstance(q_obj, spss.sa):
-                    tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
-                    mean_new_question, mean_command = q_obj.get_scale('mean')
-                    std_new_question, std_command = q_obj.get_scale('std')
+                    tb_new_question, tb_command = q_obj.get_topbottom(q_obj.q_code, topbottom_range)
+                    mean_new_question, mean_command = q_obj.get_scale(q_obj.q_code, 'mean')
+                    std_new_question, std_command = q_obj.get_scale(q_obj.q_code, 'std')
                     self.spss_question['TB_S'].extend([tb_new_question, mean_new_question])
                     self.commands.extend([tb_command, mean_command])
                     if compute_std:
