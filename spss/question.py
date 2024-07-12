@@ -96,7 +96,7 @@ class rank(question):
         for a_code in self.option_codes:
             value_label_command.append(syntax.value_label(a_code, value_label_dict))
 
-        self.commands.extend(self.var_label_command + self.value_label_command)
+        self.commands.extend(var_label_command + value_label_command)
         
 class matrix(question):
     def __init__(self, info):
