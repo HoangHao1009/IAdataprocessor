@@ -39,8 +39,8 @@ VALUE=1
 /DISPLAY NAME=[${question}].
 '''
 
-def ctab(cols, calc_type=dict, comparetest_type=["MEAN"], alpha=0.1):
-    def table_code(calc_type):
+def ctab(cols, cacl_dict=dict, comparetest_type=["MEAN"], alpha=0.1):
+    def table_code(cacl_dict):
         code = '/TABLE '
         cal_command = {
             'Count': '[C][COUNT F40.0, TOTALS[COUNT F40.0]]',
@@ -49,8 +49,9 @@ def ctab(cols, calc_type=dict, comparetest_type=["MEAN"], alpha=0.1):
             'Std': '[STDDEV COMMA40.2]'
         }
 
-        for question, cal in calc_type.items():
-            code += f'{question} {cal_command[cal]} + \n'
+        for question, cal_list in cacl_dict.items():
+            for cal in cal_list:
+                code += f'{question} {cal_command[cal]} + \n'
         return code.rstrip(' + \n')
     
     def by_code(cols):
@@ -65,7 +66,7 @@ TYPE={test} ALPHA={alpha} ADJUST=NONE ORIGIN=COLUMN INCLUDEMRSETS=YES
 '''
     return f'''
 CTABLES
-{table_code(calc_type)}
+{table_code(cacl_dict)}
 {by_code(cols)}
 /SLABELS POSITION=ROW VISIBLE=NO
 /CATEGORIES VARIABLES=ALL

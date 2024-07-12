@@ -60,7 +60,7 @@ class Processor:
             if q_obj.q_code in question_list:
                 tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
                 scale_new_question, scale_command = q_obj.get_scale()
-                
+
                 if isinstance(q_obj, spss.sa):
                     self.spss_question['TB_S'].extend([tb_new_question, scale_new_question])
                     self.commands.extend([tb_command, scale_command])
@@ -71,8 +71,17 @@ class Processor:
                         self.commands.extend(i)
 
     # Columns -> Ctab: compute new var
-    def calculate_dict(self, rows_code):
+    def calculate_dict(self, rows_code, col_perc=False, std=False):
         result = {}
         for question in rows_code:
             if question in self.spss_question['TB_S']:
-                result[question] = ['Mean', 'Std']
+                if std:
+                    result[question] = ['Mean', 'Std']
+                else:
+                    result[question] = ['Mean']
+            else:
+                if col_perc:
+                    result[question] = ['ColPct']
+                else:
+                    result['question'] = ['Mean']
+        return result
