@@ -31,20 +31,23 @@ class Processor:
             #T and N
             self.question_objects.append(q_obj)
 
-    def get_question_code(self, block_order, type='all'):
+    def get_question_code(self, block_order, spss=True):
+        def custom_extend(result_list, item, key=True):
+            if isinstance(item, list):
+                result_list.extend(item)
+            else:
+                if key == True:
+                    for v in item.values():
+                        result_list.extend(v)
+                else:
+                    for v in item.keys():
+                        result_list.append(v)
+            return result_list
         result = []
         for q_type, value in self.spss_question.items():
-            if type == 'all':
-                try:
-                    result.extend(value)
-                except:
-                    result.extend(value.keys())
-            elif type == 'ctab':
-                if q_type in ['SA', 'MA', 'R', 'MT', 'TB_S']:
-                    try:
-                        result.extend(value)
-                    except:
-                        result.extend(value.keys())
+            if q_type in ['SA', 'MA', 'MT', 'R', 'TB_S']:
+                result = custom_extend(result, value, spss)
+
         return sorted(result, key=lambda item: utils.custom_sort(item, block_order))
     
     def get_all_command(self):
@@ -75,7 +78,7 @@ class Processor:
         if rows_code == None and block_order == None:
             raise ValueError('You must specify rows_code or block_order')
         elif rows_code == None:
-            rows_code = self.get_question_code(block_order, type='ctab')
+            rows_code = self.get_question_code(block_order, spss=True)
         
         result = {}
         for question in rows_code:
