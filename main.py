@@ -80,6 +80,7 @@ class Processor:
         
         result = {}
         for question in rows_code:
+            print(question)
             if question in self.spss_question['TB_S']:
                 if std:
                     result[question] = ['Mean', 'Std']
