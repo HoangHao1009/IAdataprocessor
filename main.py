@@ -16,9 +16,6 @@ class Processor:
                 q_obj = spss.sa(question)
                 print(q_obj.q_code)
                 
-                if question['code'] in self.spss_question['SA']:
-                    print(f'{q_obj.q_code} Already exist')
-
                 self.spss_question['SA'].append(q_obj.q_code)
             
             elif q_type == 'multiplechoice_checkbox':
@@ -33,17 +30,8 @@ class Processor:
                 q_obj = spss.matrix(question)
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
-            #T and N
-            l = []
-            for i in self.question_objects:
-                l.append(i.q_code)
-                if i.q_code == 'K1':
-                    print('xxxx')
 
-            if question['code'] in l:
-                print(f"{question['code']} already exist")
-            else:
-                self.question_objects.append(q_obj)
+            self.question_objects.append(q_obj)
 
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
