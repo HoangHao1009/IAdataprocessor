@@ -4,7 +4,7 @@ import spss
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
-        self.origin_question = {'SA': [], 'MA': [], 'R': [], 'T': [],'N': []}
+        self.origin_question = {'SA': [], 'MA': [], 'R': [], 'MT': [], 'T': [],'N': []}
         self.spss_question = {'SA': [], 'R': [], 'T': [], 'N': [], 'TB_S': []}
         self.spss_question['MA'] = {}
         self.question_objects = []
@@ -30,8 +30,8 @@ class Processor:
 
             elif q_type == 'matrix_radio':
                 q_obj = spss.matrix(question)
-                self.origin_question['R'].append(q_obj.q_code)
-                self.spss_question['R'].extend(q_obj.option_codes)
+                self.origin_question['MT'].append(q_obj.q_code)
+                self.spss_question['MT'].extend(q_obj.option_codes)
 
             #T and N
             self.question_objects.append(q_obj)
