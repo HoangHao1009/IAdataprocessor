@@ -91,6 +91,9 @@ IF ({question} = 6 OR {question} = 7) {new_question} = 2.
 IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     '''
             value_label_command = value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
+        else:
+            print(f'{type} is not valid')
+            if_command, value_label_command = None, None
             
         return if_command, value_label_command
 
