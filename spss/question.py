@@ -16,13 +16,10 @@ def take_qinfo(info):
 
 class question:
     def __init__(self, info):
-        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
-        self.var_label_command = []
-        self.value_label_command = []
-        self.json = info
-        self.mrset_command = []
         self.commands = []
         self.option_codes = []
+        self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
+        self.json = info
 
     def get_option_codes(self):
         return sorted(self.option_codes, utils.custom_sort)
@@ -34,16 +31,23 @@ class sa(question):
         if self.q_type != 'multiplechoice_radio':
             raise ValueError(f'Question {self.q_type} is not a SA')
 
-        self.var_label_command.append(syntax.var_label(self.q_code, self.q_text))
+        var_label_command = syntax.var_label(self.q_code, self.q_text)
 
         value_label_dict = {}
         for index, answer in enumerate(self.options):
             index = index + 1
             o_text = answer['text']
             value_label_dict[index+1] = o_text
-        self.value_label_command.append(syntax.value_label(self.q_code, value_label_dict))
+        value_label_command = syntax.value_label(self.q_code, value_label_dict)
 
-        self.commands.extend(self.var_label_command + self.var_label_command)
+        self.commands.extend([var_label_command, value_label_command])
+    
+    def get_topbottom(self, topbottom_scale='1-5'):
+        return syntax.compute_topbottom(self.q_code, topbottom_scale)
+    
+    def get_scale(self, type):
+        return syntax.compute_topbottom(self.q_code, type)
+
 
 class ma(question):
     def __init__(self, info):
@@ -51,18 +55,22 @@ class ma(question):
         if self.q_type != 'multiplechoice_checkbox':
             raise ValueError(f'Question {self.q_type} is not a MA')
         
+        var_label_command = []
+        value_label_command = []
+        
         for index, answer in enumerate(self.options):
             index = index + 1
             o_text = answer['text']
             o_code = f'{self.q_code}A{index}'
             o_label = f'{self.q_text}_{o_text}'
 
-            self.var_label_command.append(syntax.var_label(o_code, o_label))
-            self.value_label_command.append(syntax.value_label(o_code, {1: o_text}))
+            var_label_command.append(syntax.var_label(o_code, o_label))
+            value_label_command.append(syntax.value_label(o_code, {1: o_text}))
 
             self.option_codes.append(o_code)
-        self.mrset_command.append(syntax.mrset(o_code, o_text, self.option_codes))
-        self.commands.extend(self.var_label_command + self.value_label_command + self.mrset_command)
+        mrset_command = syntax.mrset(o_code, o_text, self.option_codes)
+        self.commands.extend([var_label_command, value_label_command])
+        self.commands.append(mrset_command)
 
 class rank(question):
     def __init__(self, info):
@@ -70,6 +78,9 @@ class rank(question):
 
         if self.q_type != 'rank_order_dropdown':
             raise ValueError(f'Question {self.q_type} is not a RANK')
+        
+        var_label_command = []
+        value_label_command = []
         
         value_label_dict = {}
         for index, answer in enumerate(self.options):
@@ -80,10 +91,10 @@ class rank(question):
             self.option_codes.append(o_code)
             value_label_dict[index] = o_text
 
-            self.var_label_command.append(syntax.var_label(o_code, o_label))
+            var_label_command.append(syntax.var_label(o_code, o_label))
 
         for a_code in self.option_codes:
-            self.value_label_command.append(syntax.value_label(a_code, value_label_dict))
+            value_label_command.append(syntax.value_label(a_code, value_label_dict))
 
         self.commands.extend(self.var_label_command + self.value_label_command)
         
@@ -93,6 +104,10 @@ class matrix(question):
 
         if self.q_type != 'matrix_radio':
             raise ValueError(f'Question {self.q_type} is not a RANK')
+        
+        var_label_command = []
+        value_label_command = []
+
 
         for index, row in enumerate(self.options):
             value_label_dict = {}
@@ -100,7 +115,7 @@ class matrix(question):
             index = index + 1
             o_code = f'{self.q_code}R{index}'
             o_label = f'{self.q_text}_{r_text}'
-            self.var_label_command.append(syntax.var_label(o_code, o_label))
+            var_label_command.append(syntax.var_label(o_code, o_label))
 
             self.option_codes.append(o_code)
 
@@ -108,7 +123,7 @@ class matrix(question):
                 col_index = col_index + 1
                 col_text = column['text']
                 value_label_dict[col_index] = col_text
-            self.value_label_command.append(syntax.value_label(o_code, value_label_dict))
+            value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
             self.commands.extend(self.var_label_command + self.value_label_command)
 
@@ -118,4 +133,7 @@ class text:
 class numeric:
     pass
 
+class topbottom(question):
+    def __init__(info):
+        super().__init__()
 

@@ -91,26 +91,38 @@ IF ({question} = 6 OR {question} = 7) {new_question} = 2.
 IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     '''
             value_label_command = utils.value_label(new_question, {1: 'Bottom 5 boxes', 2: 'Neutral', 3: 'Top 3 boxes'})
-        return if_command, value_label_command
+        command = if_command, value_label_command
+
+        return command
 
     if_command, value_label_command = take_command(type)
 
-    return f'''
+    label = f'{question} - Top to Bottom Boxes'
+
+    command =  f'''
 COMPUTE {question} = 0.
 {if_command}
-{utils.var_label(new_question, f'{question} - Top to Bottom Boxes')}
+{utils.var_label(new_question, label)}
 {value_label_command}
 EXECUTE.
 '''
+    
+    return new_question, command
 
-def compute_scale(question):
-    question_scale = f'{question}S'
-    return f'''
-COMPUTE {question_scale} = {question}.
-VARIABLE LEVEL {question_scale} (SCALE).
-{var_label(question_scale, f'{question}. Scale')}
+def compute_scale(question, type='mean'):
+    if type == 'mean':
+        new_question = f'{question}Smean'
+        label = f'{question}. Mean'
+    elif type == 'std':
+        new_question = f'{question}Sstd'
+        label = f'{question}. Std'
+    command =  f'''
+COMPUTE {new_question} = {question}.
+VARIABLE LEVEL {new_question} (SCALE).
+{var_label(new_question, label)}
 EXECUTE.
 '''
+    return new_question, command
 
 def export(folder_path):
     return f'''
