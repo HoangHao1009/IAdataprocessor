@@ -5,7 +5,7 @@ class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
         self.origin_question = {'SA': [], 'MA': [], 'R': [], 'MT': [], 'T': [],'N': []}
-        self.spss_question = {'SA': [], 'R': [], 'T': [], 'N': [], 'TB_S': []}
+        self.spss_question = {'SA': [], 'R': [], 'MT': [], 'T': [], 'N': [], 'TB_S': []}
         self.spss_question['MA'] = {}
         self.question_objects = []
         self.commands = []
@@ -45,7 +45,7 @@ class Processor:
                 except:
                     result.extend(value.keys())
             elif type == 'ctab':
-                if q_type in ['SA', 'MA', 'R']:
+                if q_type in ['SA', 'MA', 'R', 'MT']:
                     try:
                         result.extend(value)
                     except:
