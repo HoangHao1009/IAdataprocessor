@@ -53,8 +53,10 @@ class Processor:
         return sorted(result, key=lambda item: utils.custom_sort(item, block_order))
     
     def get_all_command(self):
+        commands = []
         for q_obj in self.question_objects:
-            self.commands.extend(q_obj.commands)
+            commands.append(q_obj.commands)
+        self.commands = commands
         
     #topbottom, mean, std, ctab
     def get__topbottom_scale(self, question_list=[], topbottom_range='1-5', compute_std=True):
