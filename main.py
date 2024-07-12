@@ -4,7 +4,7 @@ import spss
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
-        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB_S': [],
+        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': []
                               'MA': {}, 'R': {}, 'MT': {}}
         self.question_objects = []
         self.commands = []
@@ -41,7 +41,7 @@ class Processor:
             return result_list
         result = []
         for q_type, value in self.spss_question.items():
-            if q_type in ['SA', 'MT', 'R', 'TB_S']:
+            if q_type in ['SA', 'MT', 'R', 'TB', 'S']:
                 result = custom_extend(result, value)
             elif q_type == 'MA':    
                 result.extend(value.keys())    
@@ -63,11 +63,12 @@ class Processor:
                 scale_new_question, scale_command = q_obj.get_scale()
 
                 if isinstance(q_obj, spss.sa):
-                    self.spss_question['TB_S'].extend([tb_new_question, scale_new_question])
+                    self.spss_question['TB'].append(tb_new_question)
+                    self.spss_question['S'].append(scale_new_question)
                     self.commands.extend([tb_command, scale_command])
                 elif isinstance(q_obj, spss.matrix):
-                    for i in [tb_new_question, scale_new_question]:
-                        self.spss_question['TB_S'].extend(i)
+                    self.spss_question['TB'].extend(tb_new_question)
+                    self.spss_question['S'].extend(scale_new_question)
                     for i in [tb_command, scale_command]:
                         self.commands.extend(i)
 
@@ -76,12 +77,15 @@ class Processor:
         if rows_code == None and block_order == None:
             raise ValueError('You must specify rows_code or block_order')
         elif rows_code == None:
+            print('if2')
             rows_code = self.get_question_code(block_order)
+        else:
+            print('else')
         
         result = {}
         for question in rows_code:
             print(question)
-            if question in self.spss_question['TB_S']:
+            if question in self.spss_question['S']:
                 if std:
                     result[question] = ['Mean', 'Std']
                 else:
