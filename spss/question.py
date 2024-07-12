@@ -47,7 +47,7 @@ class sa(question):
     def get_topbottom(self, topbottom_scale='1-5'):
         return syntax.compute_topbottom(self.q_code, topbottom_scale)
     
-    def get_scale(self, type):
+    def get_scale(self, type='mean'):
         return syntax.compute_topbottom(self.q_code, type)
 
 
@@ -129,6 +129,24 @@ class matrix(question):
             value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
             self.commands.extend(var_label_command + value_label_command)
+
+    def get_topbottom(self, topbottom_scale='1-5'):
+        new_questions = []
+        syntaxs = []
+        for i in self.option_codes:
+            q, s = syntax.compute_topbottom(self.q_code, topbottom_scale)
+            new_questions.append(q)
+            syntaxs.append(s)
+        return new_questions, syntaxs
+    
+    def get_scale(self, type='mean'):
+        new_questions = []
+        syntaxs = []
+        for i in self.option_codes:
+            q, s = syntax.compute_scale(self.q_code, type)
+            new_questions.append(q)
+            syntaxs.append(s)
+        return new_questions, syntaxs
 
 class text:
     pass

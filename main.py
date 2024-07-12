@@ -56,19 +56,27 @@ class Processor:
         self.commands = commands
         
     #topbottom, mean, std, ctab
-    def get__topbottom_scale(self, question_list=[], topbottom_range='1-5', compute_std=True):
+    def get_topbottom_scale(self, question_list=[], topbottom_range='1-5', compute_std=True):
 
         for q_obj in self.question_objects:
             if q_obj.q_code in question_list:
                 if isinstance(q_obj, spss.sa):
-                    tb_new_question, tb_command = q_obj.get_topbottom(q_obj.q_code, topbottom_range)
-                    mean_new_question, mean_command = q_obj.get_scale(q_obj.q_code, 'mean')
-                    std_new_question, std_command = q_obj.get_scale(q_obj.q_code, 'std')
+                    tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
+                    mean_new_question, mean_command = q_obj.get_scale('mean')
+                    std_new_question, std_command = q_obj.get_scale('std')
                     self.spss_question['TB_S'].extend([tb_new_question, mean_new_question])
                     self.commands.extend([tb_command, mean_command])
                     if compute_std:
                         self.spss_question['TB_S'].append(std_new_question)
-                        self.commands['TB_S'].append(std_command)
-
-
-
+                        self.commands.append(std_command)
+                elif isinstance(q_obj, spss.matrix):
+                    tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
+                    mean_new_question, mean_command = q_obj.get_scale('mean')
+                    std_new_question, std_command = q_obj.get_scale('std')
+                    for i in [tb_new_question, mean_new_question]:
+                        self.spss_question['TB_S'].extend(i)
+                    for i in [tb_command, mean_command]:
+                        self.commands.extend(i)
+                    if compute_std:
+                        self.spss_question['TB_S'].extend(std_new_question)
+                        self.commands.extend(std_command)
