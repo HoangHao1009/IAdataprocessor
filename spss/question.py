@@ -43,12 +43,12 @@ class question:
         
     def get_scale(self):
         if self.q_type == 'multiplechoice_radio':
-            return syntax.compute_scale(self.q_code, type)
+            return syntax.compute_scale(self.q_code)
         elif self.q_type == 'matrix_radio':
             new_questions = []
             syntaxs = []
             for i in self.option_codes:
-                q, s = syntax.compute_scale(i, type)
+                q, s = syntax.compute_scale(i)
                 new_questions.append(q)
                 syntaxs.append(s)
             return new_questions, syntaxs
