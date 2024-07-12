@@ -48,7 +48,7 @@ class sa(question):
         return syntax.compute_topbottom(self.q_code, topbottom_scale)
     
     def get_scale(self, type='mean'):
-        return syntax.compute_topbottom(self.q_code, type)
+        return syntax.compute_scale(self.q_code, type)
 
 
 class ma(question):
