@@ -4,9 +4,10 @@ import spss
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
-        self.origin_question = {'SA': [], 'MA': [], 'R': [], 'MT': [], 'T': [],'N': []}
-        self.spss_question = {'SA': [], 'R': [], 'MT': [], 'T': [], 'N': [], 'TB_S': []}
+        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB_S': []}
         self.spss_question['MA'] = {}
+        self.spss_question['R'] = {}
+        self.spss_question['MT'] = {}
         self.question_objects = []
         self.commands = []
 
@@ -15,23 +16,19 @@ class Processor:
             q_type = question['type']
             if q_type == 'multiplechoice_radio':
                 q_obj = spss.sa(question)
-                self.origin_question['SA'].append(q_obj.q_code)
                 self.spss_question['SA'].append(q_obj.q_code)
             
             elif q_type == 'multiplechoice_checkbox':
                 q_obj = spss.ma(question)
-                self.origin_question['MA'].append(q_obj.q_code)
                 self.spss_question['MA'][f'${q_obj.q_code}'] = q_obj.option_codes
 
             elif q_type == 'rank_order_dropdown':
                 q_obj = spss.rank(question)
-                self.origin_question['R'].append(q_obj.q_code)
-                self.spss_question['R'].extend(q_obj.option_codes)
+                self.spss_question['R'][q_obj.q_code] = q_obj.option_codes
 
             elif q_type == 'matrix_radio':
                 q_obj = spss.matrix(question)
-                self.origin_question['MT'].append(q_obj.q_code)
-                self.spss_question['MT'].extend(q_obj.option_codes)
+                self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
             #T and N
             self.question_objects.append(q_obj)
