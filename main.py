@@ -71,7 +71,12 @@ class Processor:
                         self.commands.extend(i)
 
     # Columns -> Ctab: compute new var
-    def calculate_dict(self, rows_code, col_perc=False, std=False):
+    def calculate_dict(self, rows_code=None, col_perc=False, std=False, block_order=None):
+        if rows_code == None and block_order == None:
+            raise ValueError('You must specify rows_code or block_order')
+        elif rows_code == None:
+            rows_code = self.get_question_code(block_order, type='ctab')
+        
         result = {}
         for question in rows_code:
             if question in self.spss_question['TB_S']:
