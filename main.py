@@ -80,3 +80,5 @@ class Processor:
                     if compute_std:
                         self.spss_question['TB_S'].extend(std_new_question)
                         self.commands.extend(std_command)
+
+    # Columns -> Ctab: compute new var
