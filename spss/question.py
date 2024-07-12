@@ -39,7 +39,7 @@ class sa(question):
         for index, answer in enumerate(self.options):
             index = index + 1
             o_text = answer['text']
-            value_label_dict[index+1] = o_text
+            value_label_dict[index] = o_text
         value_label_command = syntax.value_label(self.q_code, value_label_dict)
 
         self.commands.extend([var_label_command, value_label_command])
