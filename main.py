@@ -16,7 +16,7 @@ class Processor:
                 q_obj = spss.sa(question)
                 
                 for q_o in self.spss_question['SA']:
-                    if q_o.q_code == q_obj.q_code:
+                    if q_o == q_obj.q_code:
                         print(f'{q_obj.q_code} Already exist')
 
                 self.spss_question['SA'].append(q_obj.q_code)
