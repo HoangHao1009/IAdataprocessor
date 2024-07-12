@@ -4,10 +4,8 @@ import spss
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
-        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB_S': []}
-        self.spss_question['MA'] = {}
-        self.spss_question['R'] = {}
-        self.spss_question['MT'] = {}
+        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB_S': [],
+                              'MA': {}, 'R': {}, 'MT': {}}
         self.question_objects = []
         self.commands = []
 
@@ -56,29 +54,25 @@ class Processor:
         self.commands = commands
         
     #topbottom, mean, std, ctab
-    def get_topbottom_scale(self, question_list=[], topbottom_range='1-5', compute_std=True):
+    def get_topbottom_scale(self, question_list=[], topbottom_range='1-5'):
 
         for q_obj in self.question_objects:
             if q_obj.q_code in question_list:
+                tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
+                scale_new_question, scale_command = q_obj.get_scale()
+                
                 if isinstance(q_obj, spss.sa):
-                    tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
-                    mean_new_question, mean_command = q_obj.get_scale('mean')
-                    std_new_question, std_command = q_obj.get_scale('std')
-                    self.spss_question['TB_S'].extend([tb_new_question, mean_new_question])
-                    self.commands.extend([tb_command, mean_command])
-                    if compute_std:
-                        self.spss_question['TB_S'].append(std_new_question)
-                        self.commands.append(std_command)
+                    self.spss_question['TB_S'].extend([tb_new_question, scale_new_question])
+                    self.commands.extend([tb_command, scale_command])
                 elif isinstance(q_obj, spss.matrix):
-                    tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
-                    mean_new_question, mean_command = q_obj.get_scale('mean')
-                    std_new_question, std_command = q_obj.get_scale('std')
-                    for i in [tb_new_question, mean_new_question]:
+                    for i in [tb_new_question, scale_new_question]:
                         self.spss_question['TB_S'].extend(i)
-                    for i in [tb_command, mean_command]:
+                    for i in [tb_command, scale_command]:
                         self.commands.extend(i)
-                    if compute_std:
-                        self.spss_question['TB_S'].extend(std_new_question)
-                        self.commands.extend(std_command)
 
     # Columns -> Ctab: compute new var
+    def calculate_dict(self, rows_code):
+        result = {}
+        for question in rows_code:
+            if question in self.spss_question['TB_S']:
+                result[question] = ['Mean', 'Std']

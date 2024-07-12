@@ -25,6 +25,34 @@ class question:
 
     def get_option_codes(self):
         return sorted(self.option_codes, utils.custom_sort)
+    
+    def get_topbottom(self, topbottom_scale='1-5'):
+        if self.q_type == 'multiplechoice_radio':
+            return syntax.compute_topbottom(self.q_code, topbottom_scale)
+        elif self.q_type == 'matrix_radio':
+            new_questions = []
+            syntaxs = []
+            for i in self.option_codes:
+                q, s = syntax.compute_topbottom(i, topbottom_scale)
+                new_questions.append(q)
+                syntaxs.append(s)
+            return new_questions, syntaxs
+        else:
+            print(f'{self.q_type} can not get topbottom')
+
+        
+    def get_scale(self):
+        if self.q_type == 'multiplechoice_radio':
+            return syntax.compute_scale(self.q_code, type)
+        elif self.q_type == 'matrix_radio':
+            new_questions = []
+            syntaxs = []
+            for i in self.option_codes:
+                q, s = syntax.compute_scale(i, type)
+                new_questions.append(q)
+                syntaxs.append(s)
+            return new_questions, syntaxs
+
 
 class sa(question):
     def __init__(self, info):
@@ -44,12 +72,6 @@ class sa(question):
 
         self.commands.extend([var_label_command, value_label_command])
     
-    def get_topbottom(self, topbottom_scale='1-5'):
-        return syntax.compute_topbottom(self.q_code, topbottom_scale)
-    
-    def get_scale(self, type='mean'):
-        return syntax.compute_scale(self.q_code, type)
-
 
 class ma(question):
     def __init__(self, info):
@@ -129,24 +151,6 @@ class matrix(question):
             value_label_command.append(syntax.value_label(o_code, value_label_dict))
 
             self.commands.extend(var_label_command + value_label_command)
-
-    def get_topbottom(self, topbottom_scale='1-5'):
-        new_questions = []
-        syntaxs = []
-        for i in self.option_codes:
-            q, s = syntax.compute_topbottom(i, topbottom_scale)
-            new_questions.append(q)
-            syntaxs.append(s)
-        return new_questions, syntaxs
-    
-    def get_scale(self, type='mean'):
-        new_questions = []
-        syntaxs = []
-        for i in self.option_codes:
-            q, s = syntax.compute_scale(i, type)
-            new_questions.append(q)
-            syntaxs.append(s)
-        return new_questions, syntaxs
 
 class text:
     pass

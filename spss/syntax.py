@@ -111,13 +111,9 @@ EXECUTE.
     
     return new_question, command
 
-def compute_scale(question, type='mean'):
-    if type == 'mean':
-        new_question = f'{question}Smean'
-        label = f'{question}. Mean'
-    elif type == 'std':
-        new_question = f'{question}Sstd'
-        label = f'{question}. Std'
+def compute_scale(question):
+    new_question = f'{question}S'
+    label = f'{question}. Scale'
     command =  f'''
 COMPUTE {new_question} = {question}.
 VARIABLE LEVEL {new_question} (SCALE).
