@@ -90,7 +90,6 @@ class Processor:
         
         result = {}
         for question in rows_code:
-            print(question)
             if question in self.spss_question['S']:
                 if std:
                     result[question] = ['Mean', 'Std']
@@ -102,3 +101,6 @@ class Processor:
                 else:
                     result[question] = ['Count']
         return result
+    
+    # def compute_new_var():
+
