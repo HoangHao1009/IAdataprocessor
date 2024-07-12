@@ -4,7 +4,7 @@ import spss
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
-        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': []
+        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [],
                               'MA': {}, 'R': {}, 'MT': {}}
         self.question_objects = []
         self.commands = []
