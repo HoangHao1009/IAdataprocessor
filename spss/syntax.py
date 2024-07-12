@@ -102,7 +102,7 @@ IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     command =  f'''
 COMPUTE {question} = 0.
 {if_command}
-{utils.var_label(new_question, label)}
+{var_label(new_question, label)}
 {value_label_command}
 EXECUTE.
 '''
