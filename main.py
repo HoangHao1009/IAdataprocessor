@@ -55,7 +55,7 @@ class Processor:
     def get_all_command(self):
         commands = []
         for q_obj in self.question_objects:
-            commands.append(q_obj.commands)
+            commands.extend(q_obj.commands)
         self.commands = commands
         
     #topbottom, mean, std, ctab
