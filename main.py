@@ -42,7 +42,7 @@ class Processor:
                 except:
                     result.extend(value.keys())
             elif type == 'ctab':
-                if q_type in ['SA', 'MA', 'R', 'MT']:
+                if q_type in ['SA', 'MA', 'R', 'MT', 'TB_S']:
                     try:
                         result.extend(value)
                     except:
