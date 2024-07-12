@@ -24,7 +24,7 @@ class question:
         self.json = info
 
     def get_option_codes(self):
-        return sorted(self.option_codes, utils.custom_sort)
+        return sorted(self.option_codes, key=utils.custom_sort)
     
     def get_topbottom(self, topbottom_scale='1-5'):
         if self.q_type == 'multiplechoice_radio':
