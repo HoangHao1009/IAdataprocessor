@@ -76,7 +76,7 @@ class Processor:
         if rows_code == None and block_order == None:
             raise ValueError('You must specify rows_code or block_order')
         elif rows_code == None:
-            rows_code = self.get_question_code(block_order, spss=True)
+            rows_code = self.get_question_code(block_order)
         
         result = {}
         for question in rows_code:
