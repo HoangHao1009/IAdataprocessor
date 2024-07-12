@@ -80,7 +80,7 @@ def compute_topbottom(question, type = '1-5'):
         if type == '1-5':
             if_command = f'''
 IF ({question} = 1 OR {question} = 2) {new_question} = 1.
-IF ({question} = 3) {question} = 2.
+IF ({question} = 3) {new_question} = 2.
 IF ({question} = 4 OR {question} = 5) {new_question} = 3.
     '''
             value_label_command = value_label(new_question, {1: 'Bottom 2 boxes', 2: 'Neutral', 3: 'Top 2 boxes'})
