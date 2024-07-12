@@ -38,6 +38,7 @@ class Processor:
 
             else:
                 q_obj = question(question)
+            result.append(q_obj)
 
         self.question_objects = result
 
