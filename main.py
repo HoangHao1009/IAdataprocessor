@@ -82,11 +82,11 @@ class Processor:
     def calculate_dict(self, rows_code=None, col_perc=False, std=False, block_order=None):
         if rows_code == None and block_order == None:
             raise ValueError('You must specify rows_code or block_order')
-        elif rows_code == None:
-            print('if2')
+        elif rows_code == None and block_order != None:
+            print('Use self.get_question_code(block_order)')
             rows_code = self.get_question_code(block_order)
         else:
-            print('else')
+            print('XXX')
         
         result = {}
         for question in rows_code:
