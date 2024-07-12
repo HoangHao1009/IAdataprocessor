@@ -34,7 +34,10 @@ class Processor:
                 self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
 
             #T and N
-            if question['text'] == q_obj.q_text:
+            l = []
+            for i in self.question_objects:
+                l.append(i.q_code)
+            if question['code'] in l:
                 print(f'{question['code']} already exist')
             self.question_objects.append(q_obj)
 
