@@ -60,7 +60,7 @@ class Processor:
 
         for q_obj in self.question_objects:
             if q_obj.q_code in question_list:
-                if isinstance(spss.sa, q_obj):
+                if isinstance(q_obj, spss.sa):
                     tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
                     mean_new_question, mean_command = q_obj.get_scale('mean')
                     std_new_question, std_command = q_obj.get_scale('std')
