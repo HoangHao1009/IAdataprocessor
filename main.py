@@ -15,9 +15,8 @@ class Processor:
             if q_type == 'multiplechoice_radio':
                 q_obj = spss.sa(question)
                 
-                for q_o in self.spss_question['SA']:
-                    if q_o == q_obj.q_code:
-                        print(f'{q_obj.q_code} Already exist')
+                if question['code'] in self.spss_question['SA']:
+                    print(f'{q_obj.q_code} Already exist')
 
                 self.spss_question['SA'].append(q_obj.q_code)
             
@@ -39,7 +38,8 @@ class Processor:
                 l.append(i.q_code)
             if question['code'] in l:
                 print(f"{question['code']} already exist")
-            self.question_objects.append(q_obj)
+            else:
+                self.question_objects.append(q_obj)
 
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
