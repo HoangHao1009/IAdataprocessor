@@ -36,10 +36,13 @@ class Processor:
             l = []
             for i in self.question_objects:
                 l.append(i.q_code)
-                if question['code'] in l:
-                    print(f"{question['code']} already exist")
-                else:
-                    self.question_objects.append(q_obj)
+                if i.q_code == 'K1':
+                    print('xxxx')
+
+            if question['code'] in l:
+                print(f"{question['code']} already exist")
+            else:
+                self.question_objects.append(q_obj)
 
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
