@@ -13,7 +13,7 @@ def take_qinfo(info):
                 print(f'{q_code} has no options')
                 options = None
 
-        q_text = utils.parse_html(q_text)
+        q_text = utils.parse_html(q_text)[:145]
     except:
         q_type, q_code, q_text, options = None, None, None, None
 
