@@ -119,16 +119,15 @@ class Processor:
 
         q_obj = self.get_q_obj(old_question)
 
-        recode_code_list = [f'RECODE {old_question}']
+        condition = ''
 
-        for new_value, list_old_value in compute_dict.items():
-            recode_code_list.append(f"({','.join([str(i) for i in list_old_value])} = {new_value})")
-
-        recode_code =  ' '.join(recode_code_list) + f' INTO {new_question}'
-
-        varlabel_code = syntax.var_label(new_question, q_obj.q_text)
-        valuelabel_code = syntax.value_label(new_question, label_dict)
-
-        return recode_code, varlabel_code, valuelabel_code
-
+        for new, old_list in compute_dict.items():
+            old_list = [(str(i) for i in old_list)]
+            condition += f'({', '.join(old_list)} = {new})'
+        return f'''
+RECODE {old_question} {condition} INTO {new_question}.
+EXECUTE.
+{syntax.var_label(new_question, q_obj.q_text)}
+{syntax.value_label(new_question, label_dict)}
+'''
     #compute substitue
