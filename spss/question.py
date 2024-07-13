@@ -157,7 +157,7 @@ class matrix(question):
             value_label_command.append(syntax.value_label(o_code, value_label_dict))
             self.value_label_dict.append(value_label_dict)
 
-            self.commands.extend(var_label_command + value_label_command)
+        self.commands.extend(var_label_command + value_label_command)
 
 class text:
     pass
