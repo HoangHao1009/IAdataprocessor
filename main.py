@@ -8,6 +8,8 @@ class Processor:
                               'MA': {}, 'R': {}, 'MT': {}}
         self.question_objects = None
         self.commands = []
+        self.get_SPSS()
+        self.get_all_command()
 
     def get_SPSS(self):
         result = []
