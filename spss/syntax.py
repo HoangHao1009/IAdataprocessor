@@ -64,6 +64,7 @@ def ctab(cols, cacl_dict=dict, comparetest_type=["MEAN"], alpha=0.1):
 TYPE={test} ALPHA={alpha} ADJUST=NONE ORIGIN=COLUMN INCLUDEMRSETS=YES
     CATEGORIES=ALLVISIBLE MEANSVARIANCE=TESTEDCATS MERGE=YES STYLE=SIMPLE SHOWSIG=NO
 '''
+        return code
     return f'''
 CTABLES
 {table_code(cacl_dict)}
