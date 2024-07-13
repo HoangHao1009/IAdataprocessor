@@ -52,7 +52,7 @@ class Processor:
             return result_list
         result = []
         for q_type, value in self.spss_question.items():
-            if q_type in ['SA', 'MT', 'R', 'TB', 'S']:
+            if q_type in ['SA', 'MT', 'R', 'TB', 'S', 'NEW']:
                 result = custom_extend(result, value)
             elif q_type == 'MA':    
                 result.extend(value.keys())    
