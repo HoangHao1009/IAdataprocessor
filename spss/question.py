@@ -74,6 +74,7 @@ class sa(question):
         value_label_command = syntax.value_label(self.q_code, value_label_dict)
 
         self.commands.extend([var_label_command, value_label_command])
+        self.value_label_dict = value_label_dict
     
 
 class ma(question):
@@ -125,6 +126,7 @@ class rank(question):
             value_label_command.append(syntax.value_label(a_code, value_label_dict))
 
         self.commands.extend(var_label_command + value_label_command)
+        self.value_label_dict = value_label_dict
         
 class matrix(question):
     def __init__(self, info):
@@ -136,6 +138,7 @@ class matrix(question):
         var_label_command = []
         value_label_command = []
 
+        self.value_label_dict = []
 
         for index, row in enumerate(self.options):
             value_label_dict = {}
@@ -152,6 +155,7 @@ class matrix(question):
                 col_text = utils.parse_html(column['text'])
                 value_label_dict[col_index] = col_text
             value_label_command.append(syntax.value_label(o_code, value_label_dict))
+            self.value_label_dict.append(value_label_dict)
 
             self.commands.extend(var_label_command + value_label_command)
 
