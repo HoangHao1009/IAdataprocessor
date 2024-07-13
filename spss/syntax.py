@@ -55,7 +55,7 @@ def ctab(cols, cacl_dict=dict, comparetest_type=["MEAN"], alpha=0.1):
         return code.rstrip(' + \n')
     
     def by_code(cols):
-        return 'BY' + ' + '.join(cols)
+        return 'BY ' + ' + '.join(cols)
     
     def compare_code(comparetest_type, alpha):
         code = '/COMPARE'
