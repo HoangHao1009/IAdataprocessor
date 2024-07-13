@@ -123,7 +123,7 @@ class Processor:
 
         for new, old_list in compute_dict.items():
             old_list = [(str(i) for i in old_list)]
-            condition += f'({', '.join(old_list)} = {new})'
+            condition += f"({', '.join(old_list)} = {new})"
         return f'''
 RECODE {old_question} {condition} INTO {new_question}.
 EXECUTE.
