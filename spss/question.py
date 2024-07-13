@@ -165,7 +165,4 @@ class text:
 class numeric:
     pass
 
-class topbottom(question):
-    def __init__(info):
-        super().__init__()
 

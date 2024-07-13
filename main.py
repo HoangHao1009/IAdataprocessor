@@ -4,7 +4,7 @@ import spss
 class Processor:
     def __init__(self, api_key, env, survey_id):
         self.question_json = utils.getjson(api_key, env, survey_id)
-        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [],
+        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [], 'NEW': [],
                               'MA': {}, 'R': {}, 'MT': {}}
         self.question_objects = None
         self.commands = []
@@ -107,13 +107,6 @@ class Processor:
                     result[question] = ['Count']
         return result
     
-    old_question = {
-        1: [2,3],
-        2: [4],
-        3: [5],
-        4: [6]
-    }
-
     #compute new var
     def compute_new_sa(self, new_question, old_question, compute_dict, label_dict):
 
@@ -124,10 +117,31 @@ class Processor:
         for new, old_list in compute_dict.items():
             old_list = [str(i) for i in old_list]
             condition += f"({', '.join(old_list)} = {new})"
-        return f'''
+        command = f'''
 RECODE {old_question} {condition} INTO {new_question}.
 EXECUTE.
-{syntax.var_label(new_question, q_obj.q_text)}
+{syntax.var_label(new_question, f'RECODE - {q_obj.q_text}')}
 {syntax.value_label(new_question, label_dict)}
 '''
-    #compute substitue
+        self.commands.append(command)
+        self.spss_question['NEW'].append(new_question)
+
+
+    def compute_new_ma(self, ma_question, index, condition, label):
+        new_question = f'{ma_question}A{index}'
+
+        q_obj = self.get_q_obj(ma_question)
+
+        q_obj.option_codes.append(new_question)
+        self.spss_question['MA'][f'${ma_question}'] = q_obj.option_codes
+
+        command =  f'''
+COMPUTE {new_question} = 0.
+IF ({condition}) {new_question} = 1.
+EXECUTE.
+{syntax.var_label(new_question, label)}
+{syntax.value_label(new_question, {1: label})}
+{syntax.mrset(ma_question, q_obj.q_text, q_obj.option_codes)}
+'''
+        
+        self.commands.append(command)
