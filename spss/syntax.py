@@ -71,7 +71,7 @@ CTABLES
 /SLABELS POSITION=ROW VISIBLE=NO
 /CATEGORIES VARIABLES=ALL
     EMPTY=INCLUDE TOTAL=YES POSITION=BEFORE
-{compare_code(comparetest_type)}.
+{compare_code(comparetest_type, alpha)}.
 '''
 
 def compute_topbottom(question, type = '1-5'):
