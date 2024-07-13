@@ -104,7 +104,7 @@ IF ({question} = 8 OR {question} = 9 OR {question} = 10) {new_question} = 3.
     label = f'{question} - Top to Bottom Boxes'
 
     command =  f'''
-COMPUTE {question} = 0.
+COMPUTE {new_question} = 0.
 {if_command}
 {var_label(new_question, label)}
 {value_label_command}
