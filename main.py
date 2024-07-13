@@ -37,6 +37,11 @@ class Processor:
 
         self.question_objects = result
 
+    def get_q_obj(self, question):
+        for q_obj in self.question_objects:
+            if question == q_obj.q_code:
+                return q_obj
+
     def get_question_code(self, block_order):
         def custom_extend(result_list, item):
             if isinstance(item, list):
@@ -102,5 +107,22 @@ class Processor:
                     result[question] = ['Count']
         return result
     
-    # def compute_new_var():
+    old_question = {
+        1: [2,3],
+        2: [4],
+        3: [5],
+        4: [6]
+    }
 
+    #compute new var
+    def compute_new_sa(self, new_question, old_question, compute_dict, label_dict):
+
+        q_obj = self.get_q_obj(old_question)
+
+        recode_code_list = [f'RECODE {old_question}']
+
+        for new_value, list_old_value in compute_dict.items():
+            recode_code_list.append(f'({','.join(list_old_value)} = {new_value})')
+        return ' '.join(recode_code_list) + f' INTO {new_question}'
+    
+    #compute substitue
