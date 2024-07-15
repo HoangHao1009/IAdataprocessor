@@ -38,7 +38,7 @@ VALUE=1
 '''
     elif type == 'mc':
         gr = 'MCGROUP'
-        cate_value = None
+        cate_value = ''
     else:
         raise(f'Type {type} is not valid')
     return f'''
