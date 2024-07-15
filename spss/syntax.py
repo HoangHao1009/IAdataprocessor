@@ -29,9 +29,15 @@ def value_label(question, label_dict):
     label = label.rstrip('\n')
     return f"VALUE LABELS {question} {label}."
 
-def mrset(question, question_label, list_answer):
+def mrset(question, question_label, list_answer, type='md'):
+    if type == 'md':
+        gr = 'MDGROUP'
+    elif type == 'mc':
+        gr = 'MCGROUP'
+    else:
+        raise(f'Type {type} is not valid')
     return f'''
-MRSETS /MDGROUP NAME=${question}
+MRSETS /{gr} NAME=${question}
 LABEL="{question_label}"
 CATEGORYLABELS=COUNTEDVALUES
 VARIABLES={' '.join(list_answer)}
