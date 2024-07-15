@@ -33,8 +33,7 @@ def mrset(question, question_label, list_answer, type='md'):
     if type == 'md':
         gr = 'MDGROUP'
         cate_value = '''
-CATEGORYLABELS=COUNTEDVALUES
-VALUE=1
+CATEGORYLABELS=COUNTEDVALUES VALUE=1
 '''
     elif type == 'mc':
         gr = 'MCGROUP'
@@ -43,8 +42,7 @@ VALUE=1
         raise(f'Type {type} is not valid')
     return f'''
 MRSETS /{gr} NAME=${question}
-LABEL="{question_label}"
-{cate_value}
+LABEL="{question_label}" {cate_value}
 VARIABLES={' '.join(list_answer)}
 /DISPLAY NAME=[${question}].
 '''
