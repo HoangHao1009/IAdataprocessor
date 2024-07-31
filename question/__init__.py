@@ -1,1 +1,1 @@
-from questionnaire import Questionnaire
+from .questionnaire import Questionnaire
