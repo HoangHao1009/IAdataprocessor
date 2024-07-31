@@ -1,6 +1,6 @@
 import requests
-from spss import utils, syntax
 import spss
+from .spss import utils, syntax
 
 
 class Questionnaire:
