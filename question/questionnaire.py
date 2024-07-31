@@ -1,5 +1,5 @@
 import requests
-import spss
+from . import spss
 from .spss import utils, syntax
 
 
