@@ -1,18 +1,26 @@
+import requests
 from spss import utils, syntax
 import spss
 
-class Processor:
-    def __init__(self, api_key, env, survey_id):
-        self.question_json = utils.getjson(api_key, env, survey_id)
+
+class Questionnaire:
+    def __init__(self, config):
+        self.question_url = config.get_survey_url() + '/questions?page=1&perPage=500'
+        payload = {}
+        headers = {
+            'api-key': config.api_key
+            }
+        
+        self.json = requests.request("GET", self.question_url , headers=headers, data=payload).json()['response']
+        
         self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [], 'NEW': [],
                               'MA': {}, 'R': {}, 'MT': {}}
-        self.question_objects = None
+        self.question_objects = []
         self.commands = []
         self.get_SPSS()
         self.get_all_command()
 
     def get_SPSS(self):
-        result = []
         for question in self.question_json:
             q_type = question['type']
             if q_type == 'multiplechoice_radio':
@@ -35,9 +43,7 @@ class Processor:
 
             else:
                 q_obj = spss.question(question)
-            result.append(q_obj)
-
-        self.question_objects = result
+            self.question_objects.append(q_obj)
 
     def get_q_obj(self, question):
         for q_obj in self.question_objects:
