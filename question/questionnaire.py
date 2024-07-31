@@ -21,7 +21,7 @@ class Questionnaire:
         self.get_all_command()
 
     def get_SPSS(self):
-        for question in self.question_json:
+        for question in self.json:
             q_type = question['type']
             if q_type == 'multiplechoice_radio':
                 q_obj = spss.sa(question)
