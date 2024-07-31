@@ -20,7 +20,7 @@ class Survey:
         self.response = Responsers(config)
 
     def get_SPSS(self):
-        return Questionnaire.create_syntax()
+        return Questionnaire.get_all_command()
     
     def get_responseDf(self):
         return Responsers.dfs
