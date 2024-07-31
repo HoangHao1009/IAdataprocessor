@@ -23,6 +23,7 @@ class Survey:
         return self.questionaire.commands
     
     def get_responseDf(self):
+        #create q-a dataframe
         return Responsers.dfs
     
     def get_sql(self, folder_path):

@@ -18,4 +18,6 @@ class Responsers:
 
             response = requests.request("GET", link, headers=headers, data=payload)
             responses.extend(response.json()['response'])
-        return responses        
+        return responses
+    
+       
