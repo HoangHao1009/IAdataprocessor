@@ -17,14 +17,14 @@ class survey_config:
 class Survey:
     def __init__(self, config):
         self.questionaire = Questionnaire(config)
-        self.response = Responsers(config)
+        self.responsers = Responsers(config)
 
     def get_SPSS(self):
         return self.questionaire.commands
     
     def get_responseDf(self):
         #create q-a dataframe
-        return Responsers.dfs
+        return self.responsers.dimResp, self.responsers.Fact
     
     def get_sql(self, folder_path):
         qa = Questionnaire.qa.to_csv(os.path.join(folder_path, 'qa.csv'))
