@@ -18,28 +18,31 @@ class QuestionData:
         except:
             dimQuestion = root_df.loc[:, ['questionID', 'blockID', 'type', 'text', 'code', 'orderNumber', 'required']]
 
-        dimAnswer = root_df.loc[:, dimAnswer_col]
-        dimAnswer = dimAnswer.explode('rows').explode('columns').explode('answers')
+        try:
+            dimAnswer = root_df.loc[:, dimAnswer_col]
+            dimAnswer = dimAnswer.explode('rows').explode('columns').explode('answers')
 
-        dimAnswer['matrixOption'] = dimAnswer['rows'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
+            dimAnswer['matrixOption'] = dimAnswer['rows'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
 
-        dimAnswer['columnText'] = dimAnswer['columns'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
-        dimAnswer['columnID'] = dimAnswer['columns'].apply(lambda x: x['columnID'] if isinstance(x, dict) else x)
+            dimAnswer['columnText'] = dimAnswer['columns'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
+            dimAnswer['columnID'] = dimAnswer['columns'].apply(lambda x: x['columnID'] if isinstance(x, dict) else x)
 
-        dimAnswer['answerID'] = dimAnswer['answers'].apply(lambda x: x['answerID'] if isinstance(x, dict) else x)
-        dimAnswer['answerText'] = dimAnswer['answers'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
-        dimAnswer['answerOrderNumber'] = dimAnswer['answers'].apply(lambda x: x['orderNumber'] if isinstance(x, dict) else x)
+            dimAnswer['answerID'] = dimAnswer['answers'].apply(lambda x: x['answerID'] if isinstance(x, dict) else x)
+            dimAnswer['answerText'] = dimAnswer['answers'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
+            dimAnswer['answerOrderNumber'] = dimAnswer['answers'].apply(lambda x: x['orderNumber'] if isinstance(x, dict) else x)
 
-        dimAnswer['answerText'] = dimAnswer['answerText'].fillna(dimAnswer['columnText'])
-        dimAnswer['answerID'] = dimAnswer['answerID'].fillna(dimAnswer['columnID'])
+            dimAnswer['answerText'] = dimAnswer['answerText'].fillna(dimAnswer['columnText'])
+            dimAnswer['answerID'] = dimAnswer['answerID'].fillna(dimAnswer['columnID'])
 
-        dimAnswer.drop(['rows', 'columns', 'answers', 'columnText', 'columnID'], axis=1, inplace=True)
+            dimAnswer.drop(['rows', 'columns', 'answers', 'columnText', 'columnID'], axis=1, inplace=True)
 
-        for i in ['answerText', 'matrixOption']:
-            dimAnswer[i] = dimAnswer[i].apply(lambda x: utils.parse_html(x) if isinstance(x, str) else x)
+            for i in ['answerText', 'matrixOption']:
+                dimAnswer[i] = dimAnswer[i].apply(lambda x: utils.parse_html(x) if isinstance(x, str) else x)
 
-        dimAnswer.rename(columns={'code': 'questionCode'})
-        dimQuestion.rename(columns={'code': 'questionCode'})
+            dimAnswer.rename(columns={'code': 'questionCode'})
+            dimQuestion.rename(columns={'code': 'questionCode'})
+        except:
+            dimAnswer = None
 
         return dimQuestion, dimAnswer
 
