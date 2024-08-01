@@ -7,7 +7,6 @@ class SPSS_Processor:
         self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [], 'NEW': [],
                               'MA': {}, 'R': {}, 'MT': {}}
         self.question_objects = []
-        self.commands = []
         self.get_SPSS()
 
     def get_SPSS(self):
@@ -61,7 +60,7 @@ class SPSS_Processor:
         commands = []
         for q_obj in self.question_objects:
             commands.extend(q_obj.commands)
-        self.commands = commands
+        return commands
         
     #topbottom, mean, std, ctab
     def get_topbottom_scale(self, question_list=[], topbottom_range='1-5'):

@@ -20,13 +20,20 @@ class Survey:
         self.responsers = Responsers(config)
 
     def get_SPSS(self):
-        return self.questionaire.spss.commands
+        return self.questionaire.spss.get_all_command()
     
-    def get_responseDf(self):
-        #create q-a dataframe
-        return self.responsers.dimResp, self.responsers.Fact
-    
-    def get_sql(self, folder_path):
-        qa = Questionnaire.qa.to_csv(os.path.join(folder_path, 'qa.csv'))
-        resp_info = Responsers.dfs['resp_info'].to_csv(os.path.join(folder_path, 'resp_info.csv'))
-        resp_answers = Responsers.dfs['resp_answers'].to_csv(os.path.join(folder_path, 'resp_answers.csv'))
+    def get_datasets(self, folder_path=False):
+
+        if not folder_path:
+            return {
+                'dimReponser': self.responsers.dimResponser,
+                'dimQuestion': self.questionaire.dimQuestion,
+                'dimAnswer': self.questionaire.dimAnswer,
+                'Fact': self.responsers.Fact
+            }
+        else:
+            self.responsers.dimResponser.to_csv(os.path.join(folder_path, 'dimReponser.csv'))
+            self.questionaire.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
+            self.responsers.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'))
+            self.responsers.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'))
+
