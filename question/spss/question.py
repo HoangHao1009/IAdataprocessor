@@ -21,10 +21,10 @@ def take_qinfo(info):
 
 class question:
     def __init__(self, info):
-        self.commands = []
-        self.option_codes = []
         self.q_type, self.q_code, self.q_text, self.options = take_qinfo(info)
         self.json = info
+        self.commands = []
+        self.option_codes = []
 
     def get_option_codes(self):
         return sorted(self.option_codes, key=utils.custom_sort)

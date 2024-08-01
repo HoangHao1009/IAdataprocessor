@@ -2,14 +2,20 @@ import requests
 from .spss_processor import SPSS_Processor
 
 
-class Questionnaire(SPSS_Processor):
+class Questionnaire():
     def __init__(self, config):
-        self.question_url = config.get_survey_url() + '/questions?page=1&perPage=500'
+        self.config = config
+        self.json = self.get_json()
+        
+        self.spss = SPSS_Processor(self.json)
+
+        self.dataframes = QuestionData(self.json)
+
+    def get_json(self):
+        question_url = self.config.get_survey_url() + '/questions?page=1&perPage=500'
         payload = {}
         headers = {
-            'api-key': config.api_key
+            'api-key': self.config.api_key
             }
         
-        self.json = requests.request("GET", self.question_url , headers=headers, data=payload).json()['response']
-        
-        super().__init__(self.json)
+        return  requests.request("GET", question_url , headers=headers, data=payload).json()['response']

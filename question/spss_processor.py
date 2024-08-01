@@ -9,7 +9,6 @@ class SPSS_Processor:
         self.question_objects = []
         self.commands = []
         self.get_SPSS()
-        self.get_all_command()
 
     def get_SPSS(self):
         for question in self.json:
