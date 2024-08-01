@@ -7,6 +7,7 @@ class Responsers:
         self.api_key = config.api_key
         self.response_urls = [survey_url + f'/responses?page={i+1}&perPage=100' for i in range(config.response_pages)]
         self.json = self.get_requests()
+        self.dimResp, self.Fact = self.get_data()
 
     def get_requests(self):
         responses = []
@@ -41,5 +42,4 @@ class Responsers:
         Fact.drop(['responseSet', 'answerValues'], axis=1, inplace=True)
         Fact.dropna(subset=['answerID'], inplace=True)
 
-        self.dimResp = dimResp
-        self.Fact = Fact
+        return dimResp, Fact
