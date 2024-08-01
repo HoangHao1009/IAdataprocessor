@@ -1,5 +1,5 @@
 import pandas as pd
-from ..question.spss import utils
+from .spss import utils
 
 class QuestionData:
     def __init__(self, json):
