@@ -8,7 +8,7 @@ class QuestionData:
     
     def get_data(self):
         root_df = pd.DataFrame(self.json)
-        root_df['text'] = root_df['text'].apply(lambda x: utils.parse_html(x))
+        root_df['text'] = root_df['text'].apply(lambda x: utils.parse_html(x) if isinstance(x, str) else x)
 
         dimQuestion_col = ['questionID', 'blockID', 'type', 'text', 'code', 'orderNumber', 'required', 'randomizedRows', 'notApplicableAnswer', 'matrixType', 'minValue', 'maxValue']
         dimAnswer_col = ['questionID', 'code', 'rows', 'columns', 'answers']
@@ -33,7 +33,7 @@ class QuestionData:
         dimAnswer.drop(['rows', 'columns', 'answers', 'columnText', 'columnID'], axis=1, inplace=True)
 
         for i in ['answerText', 'matrixOption']:
-            dimAnswer[i] = dimAnswer[i].apply(lambda x: utils.parse_html(x))
+            dimAnswer[i] = dimAnswer[i].apply(lambda x: utils.parse_html(x) if isinstance(x, str) else x)
 
         dimAnswer.rename(columns={'code': 'questionCode'})
 
