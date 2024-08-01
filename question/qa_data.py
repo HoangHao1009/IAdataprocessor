@@ -36,6 +36,7 @@ class QuestionData:
             dimAnswer[i] = dimAnswer[i].apply(lambda x: utils.parse_html(x) if isinstance(x, str) else x)
 
         dimAnswer.rename(columns={'code': 'questionCode'})
+        dimQuestion.rename(columns={'code': 'questionCode'})
 
         return dimQuestion, dimAnswer
 
