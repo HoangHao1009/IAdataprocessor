@@ -26,7 +26,7 @@ class Survey:
 
         if not folder_path:
             return {
-                'dimReponser': self.responsers.dataframes.dimResponser,
+                'dimResponser': self.responsers.dataframes.dimResponser,
                 'dimQuestion': self.questionaire.dataframes.dimQuestion,
                 'dimAnswer': self.questionaire.dataframes.dimAnswer,
                 'Fact': self.responsers.dataframes.Fact
