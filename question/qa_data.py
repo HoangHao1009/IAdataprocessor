@@ -13,7 +13,10 @@ class QuestionData:
         dimQuestion_col = ['questionID', 'blockID', 'type', 'text', 'code', 'orderNumber', 'required', 'randomizedRows', 'notApplicableAnswer', 'matrixType', 'minValue', 'maxValue']
         dimAnswer_col = ['questionID', 'code', 'rows', 'columns', 'answers']
 
-        dimQuestion = root_df.loc[:, dimQuestion_col]
+        try:
+            dimQuestion = root_df.loc[:, dimQuestion_col]
+        except:
+            dimQuestion = root_df.loc[:, ['questionID', 'blockID', 'type', 'text', 'code', 'orderNumber', 'required']]
 
         dimAnswer = root_df.loc[:, dimAnswer_col]
         dimAnswer = dimAnswer.explode('rows').explode('columns').explode('answers')
