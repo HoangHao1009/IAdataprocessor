@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 from dataclasses import dataclass
 from question import Questionnaire
@@ -25,12 +26,16 @@ class Survey:
     def get_datasets(self, folder_path=False):
 
         if not folder_path:
-            return {
+            result = {
                 'dimResponser': self.responsers.dataframes.dimResponser,
                 'dimQuestion': self.questionaire.dataframes.dimQuestion,
                 'dimAnswer': self.questionaire.dataframes.dimAnswer,
                 'Fact': self.responsers.dataframes.Fact
             }
+
+            for i, v in result.items():
+                v = v.map(lambda x: np.nan if x == '' else x)
+            
         else:
             self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimReponser.csv'))
             self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
