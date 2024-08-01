@@ -23,7 +23,7 @@ class Survey:
     def get_SPSS(self):
         return self.questionaire.spss.get_all_command()
     
-    def get_datasets(self, folder_path=False):
+    def get_datasets(self, folder_path=False, spss_format=False):
 
         if not folder_path:
             result = {
@@ -43,4 +43,7 @@ class Survey:
             self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
             self.responsers.dataframes.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'))
             self.responsers.dataframes.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'))
+
+        #spssformat: concat questioncode + scale -> spss question -> pivot
+
 
