@@ -1,5 +1,6 @@
 import requests
 from .spss_processor import SPSS_Processor
+from .qa_data import QuestionData
 
 
 class Questionnaire():

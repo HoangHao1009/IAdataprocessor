@@ -3,6 +3,7 @@ import pandas as pd
 class ResponseData:
     def __init__(self, json):
         self.json = json
+        self.dimResp, self.Fact = self.get_data()
 
     def get_data(self):
         dimResp = pd.DataFrame(self.json)
