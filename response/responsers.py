@@ -16,7 +16,7 @@ class Responsers:
         for link in response_urls:
             payload = {}
             headers = {
-                'api-key': f'{self.api_key}'
+                'api-key': f'{self.config.api_key}'
             }
 
             response = requests.request("GET", link, headers=headers, data=payload)
