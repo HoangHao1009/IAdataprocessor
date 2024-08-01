@@ -20,7 +20,7 @@ class Survey:
         self.responsers = Responsers(config)
 
     def get_SPSS(self):
-        return self.questionaire.commands
+        return self.questionaire.spss.commands
     
     def get_responseDf(self):
         #create q-a dataframe
