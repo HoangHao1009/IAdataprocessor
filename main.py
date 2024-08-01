@@ -35,6 +35,8 @@ class Survey:
 
             for i, v in result.items():
                 v = v.map(lambda x: np.nan if x == '' else x)
+
+            return result
             
         else:
             self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimReponser.csv'))
