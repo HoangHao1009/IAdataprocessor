@@ -32,9 +32,7 @@ def value_label(question, label_dict):
 def mrset(question, question_label, list_answer, type='md'):
     if type == 'md':
         gr = 'MDGROUP'
-        cate_value = '''
-CATEGORYLABELS=COUNTEDVALUES VALUE=1
-'''
+        cate_value = 'CATEGORYLABELS=COUNTEDVALUES VALUE=1'
     elif type == 'mc':
         gr = 'MCGROUP'
         cate_value = ''
