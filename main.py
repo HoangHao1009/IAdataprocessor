@@ -26,14 +26,14 @@ class Survey:
 
         if not folder_path:
             return {
-                'dimReponser': self.responsers.dimResponser,
-                'dimQuestion': self.questionaire.dimQuestion,
-                'dimAnswer': self.questionaire.dimAnswer,
-                'Fact': self.responsers.Fact
+                'dimReponser': self.responsers.dataframes.dimResponser,
+                'dimQuestion': self.questionaire.dataframes.dimQuestion,
+                'dimAnswer': self.questionaire.dataframes.dimAnswer,
+                'Fact': self.responsers.dataframes.Fact
             }
         else:
-            self.responsers.dimResponser.to_csv(os.path.join(folder_path, 'dimReponser.csv'))
-            self.questionaire.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
-            self.responsers.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'))
-            self.responsers.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'))
+            self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimReponser.csv'))
+            self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
+            self.responsers.dataframes.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'))
+            self.responsers.dataframes.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'))
 
