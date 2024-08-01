@@ -55,6 +55,9 @@ class question:
                 new_questions.append(q)
                 syntaxs.append(s)
             return new_questions, syntaxs
+        else:
+            print(f'{self.q_type} can not get scale')
+
 
 
 class sa(question):

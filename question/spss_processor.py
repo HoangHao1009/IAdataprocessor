@@ -1,0 +1,147 @@
+from . import spss
+from .spss import utils, syntax
+
+class SPSS_Processor:
+    def __init__(self, json):
+        self.json = json
+        self.spss_question = {'SA': [], 'T': [], 'N': [], 'TB': [], 'S': [], 'NEW': [],
+                              'MA': {}, 'R': {}, 'MT': {}}
+        self.question_objects = []
+        self.commands = []
+        self.get_SPSS()
+        self.get_all_command()
+
+    def get_SPSS(self):
+        for question in self.json:
+            q_type = question['type']
+            if q_type == 'multiplechoice_radio':
+                q_obj = spss.sa(question)
+                self.spss_question['SA'].append(q_obj.q_code)
+            
+            elif q_type == 'multiplechoice_checkbox':
+                q_obj = spss.ma(question)
+
+                self.spss_question['MA'][f'${q_obj.q_code}'] = q_obj.option_codes
+
+            elif q_type == 'rank_order_dropdown':
+                q_obj = spss.rank(question)
+
+                self.spss_question['R'][q_obj.q_code] = q_obj.option_codes
+
+            elif q_type == 'matrix_radio':
+                q_obj = spss.matrix(question)
+                self.spss_question['MT'][q_obj.q_code] = q_obj.option_codes
+
+            else:
+                q_obj = spss.question(question)
+            self.question_objects.append(q_obj)
+
+    def get_q_obj(self, question):
+        for q_obj in self.question_objects:
+            if question == q_obj.q_code:
+                return q_obj
+
+    def get_question_code(self, block_order):
+        def custom_extend(result_list, item):
+            if isinstance(item, list):
+                result_list.extend(item)
+            else:
+                for v in item.values():
+                    result_list.extend(v)
+            return result_list
+        result = []
+        for q_type, value in self.spss_question.items():
+            if q_type in ['SA', 'MT', 'R', 'TB', 'S', 'NEW']:
+                result = custom_extend(result, value)
+            elif q_type == 'MA':    
+                result.extend(value.keys())    
+
+        return sorted(result, key=lambda item: utils.custom_sort(item, block_order))
+    
+    def get_all_command(self):
+        commands = []
+        for q_obj in self.question_objects:
+            commands.extend(q_obj.commands)
+        self.commands = commands
+        
+    #topbottom, mean, std, ctab
+    def get_topbottom_scale(self, question_list=[], topbottom_range='1-5'):
+
+        for q_obj in self.question_objects:
+            if q_obj.q_code in question_list:
+                tb_new_question, tb_command = q_obj.get_topbottom(topbottom_range)
+                scale_new_question, scale_command = q_obj.get_scale()
+
+                if isinstance(q_obj, spss.sa):
+                    self.spss_question['TB'].append(tb_new_question)
+                    self.spss_question['S'].append(scale_new_question)
+                    self.commands.extend([tb_command, scale_command])
+                elif isinstance(q_obj, spss.matrix):
+                    self.spss_question['TB'].extend(tb_new_question)
+                    self.spss_question['S'].extend(scale_new_question)
+                    for i in [tb_command, scale_command]:
+                        self.commands.extend(i)
+
+    # Columns -> Ctab: compute new var
+    def calculate_dict(self, rows_code=None, col_perc=False, std=False, block_order=None):
+        if rows_code == None and block_order == None:
+            raise ValueError('You must specify rows_code or block_order')
+        elif rows_code == None and block_order != None:
+            print('Use self.get_question_code(block_order)')
+            rows_code = self.get_question_code(block_order)
+        else:
+            print('XXX')
+        
+        result = {}
+        for question in rows_code:
+            if question in self.spss_question['S']:
+                if std:
+                    result[question] = ['Mean', 'Std']
+                else:
+                    result[question] = ['Mean']
+            else:
+                if col_perc:
+                    result[question] = ['ColPct']
+                else:
+                    result[question] = ['Count']
+        return result
+    
+    #compute new var
+    def compute_new_sa(self, new_question, old_question, compute_dict, label_dict):
+
+        q_obj = self.get_q_obj(old_question)
+
+        condition = ''
+
+        for new, old_list in compute_dict.items():
+            old_list = [str(i) for i in old_list]
+            condition += f"({', '.join(old_list)} = {new})"
+        command = f'''
+RECODE {old_question} {condition} INTO {new_question}.
+EXECUTE.
+{syntax.var_label(new_question, f'RECODE - {q_obj.q_text}')}
+{syntax.value_label(new_question, label_dict)}
+'''
+        self.commands.append(command)
+        self.spss_question['NEW'].append(new_question)
+
+
+    def compute_new_ma(self, ma_question, index, condition, label):
+        new_question = f'{ma_question}A{index}'
+
+        q_obj = self.get_q_obj(ma_question)
+
+        q_obj.option_codes.append(new_question)
+        self.spss_question['MA'][f'${ma_question}'] = q_obj.option_codes
+
+        command =  f'''
+COMPUTE {new_question} = 0.
+IF ({condition}) {new_question} = 1.
+EXECUTE.
+{syntax.var_label(new_question, label)}
+{syntax.value_label(new_question, {1: label})}
+{syntax.mrset(ma_question, q_obj.q_text, q_obj.option_codes)}
+'''
+        
+        self.commands.append(command)
+
