@@ -21,7 +21,7 @@ class Survey:
         self.responsers = Responsers(config)
 
     def get_SPSS(self):
-        return self.questionaire.get_all_command()
+        return self.questionaire.commands
     
     def get_datasets(self, folder_path=False, spss_format=False):
 
