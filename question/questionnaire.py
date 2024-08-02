@@ -3,12 +3,12 @@ from .spss_processor import SPSS_Processor
 from .qa_data import QuestionData
 
 
-class Questionnaire():
+class Questionnaire(SPSS_Processor):
     def __init__(self, config):
         self.config = config
         self.json = self.get_json()
         
-        self.spss = SPSS_Processor(self.json)
+        super().__init__(self.json)
 
         self.dataframes = QuestionData(self.json)
 
