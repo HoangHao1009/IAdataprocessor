@@ -35,9 +35,10 @@ class Responsers:
             info_df = info_df.groupby(['responseID'])[extract_name].apply(list).reset_index()
             is_list = False
             for i in info_df[extract_name]:
-                if isinstance(i, list):
+                if isinstance(i, list) and len(i) > 1:
                     is_list = True
                     break
+            print(f'is_list: {is_list}')
             if is_list == False:
                 info_df[extract_name] = info_df[extract_name].apply(lambda x: x[0] if isinstance(x, list) else x)
             self.dataframes.dimResponser = pd.merge(self.dataframes.dimResponser, info_df[['responseID', extract_name]],
