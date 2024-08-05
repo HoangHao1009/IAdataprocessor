@@ -32,6 +32,6 @@ class Responsers:
                 info_df[extract_name] = info_df['answerText'].map(function)
             else:
                 info_df[extract_name] = info_df['answerScale'].map(function)
-            info_df = info_df.groupby(['responseID'])['extract_name'].apply(list).reset_index()
-            self.dataframes.dimResponser = pd.merge(self.dataframes.dimResponser, info_df[['responseID', 'extract_name']],
+            info_df = info_df.groupby(['responseID'])[extract_name].apply(list).reset_index()
+            self.dataframes.dimResponser = pd.merge(self.dataframes.dimResponser, info_df[['responseID', extract_name]],
                                                     how='left', on='responseID')
