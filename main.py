@@ -36,10 +36,10 @@ class Survey:
             return result
             
         else:
-            self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimResponser.csv'))
-            self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
-            self.questionaire.dataframes.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'))
-            self.responsers.dataframes.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'))
+            self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimResponser.csv', index=False))
+            self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv', index=False))
+            self.questionaire.dataframes.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv', index=False))
+            self.responsers.dataframes.Fact.to_csv(os.path.join(folder_path, 'Fact.csv', index=False))
 
         #spssformat: concat questioncode + scale -> spss question -> pivot
 
