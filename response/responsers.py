@@ -22,3 +22,16 @@ class Responsers:
             response = requests.request("GET", link, headers=headers, data=payload)
             responses.extend(response.json()['response'])
         return responses
+    
+    def extract_info(self, feature, extract_name, function,scale=False):
+        if feature in self.dataframes.dimResponser:
+            self.dataframes.dimResponser[extract_name] = self.dataframes.dimResponser[feature].map(function)
+        else:
+            info_df = self.dataframes.Fact.query('questionCode == @feature')
+            if not scale:
+                info_df[extract_name] = info_df['answerText'].map(function)
+            else:
+                info_df[extract_name] = info_df['answerScale'].map(function)
+            info_df = info_df.groupby(['responseID'])['extract_name'].apply(list).reset_index()
+            self.dataframes.dimResponser = pd.merge(self.dataframes.dimResponser, info_df[['responseID', 'extract_name']],
+                                                    how='left', on='responseID')

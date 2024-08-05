@@ -19,6 +19,7 @@ class ResponseData:
             Fact[i] = Fact['responseSet'].apply(lambda x: x[i])
         Fact = Fact.explode('answerValues')
         Fact['answerID'] = Fact['answerValues'].apply(lambda x: x['answerID'] if isinstance(x, dict) else x)
+        Fact['answerText'] = Fact['answerText'].apply(lambda x: x['answerText'] if isinstance(x, dict) else x)
         Fact['answerScale'] = Fact['answerValues'].apply(lambda x: x['value']['scale'] if isinstance(x, dict) else x)
         Fact['answerdynamicExplodeText'] = Fact['answerValues'].apply(lambda x: x['value']['dynamicExplodeText'] if isinstance(x, dict) else x)
         Fact['answerValuesText'] = Fact['answerValues'].apply(lambda x: x['value']['text'] if isinstance(x, dict) else x)
