@@ -19,5 +19,6 @@ class OE:
             info_df['processed'] = info_df['answerValuesText'].apply(function)
         else:
             info_df['processed'] = info_df['answerText'].apply(function)
+        info_df = info_df.explode('processed')
         info_df.rename(columns={'answerValuesText': 'root', 'answerText': 'root'}, inplace=True)
         self.dataframes = pd.concat([self.dataframes, info_df])
