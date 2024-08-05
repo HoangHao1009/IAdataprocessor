@@ -4,6 +4,7 @@ import numpy as np
 from dataclasses import dataclass
 from question import Questionnaire
 from response import Responsers
+from oe import OE
 
 @dataclass
 class survey_config:
@@ -19,6 +20,12 @@ class Survey:
     def __init__(self, config):
         self.questionaire = Questionnaire(config)
         self.responsers = Responsers(config)
+        self.oe = OE(
+            self.responsers.dataframes.dimResponser,
+            self.questionaire.dataframes.dimAnswer,
+            self.questionaire.dataframes.dimQuestion,
+            self.responsers.dataframes.Fact
+        )
 
     def get_SPSS(self):
         return self.questionaire.commands
