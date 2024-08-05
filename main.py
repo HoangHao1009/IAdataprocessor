@@ -37,7 +37,8 @@ class Survey:
                 'dimResponser': self.responsers.dataframes.dimResponser.map(lambda x: None if x == '' else x),
                 'dimQuestion': self.questionaire.dataframes.dimQuestion.map(lambda x: None if x == '' else x),
                 'dimAnswer': self.questionaire.dataframes.dimAnswer.map(lambda x: None if x == '' else x),
-                'Fact': self.responsers.dataframes.Fact.map(lambda x: None if x == '' else x)
+                'Fact': self.responsers.dataframes.Fact.map(lambda x: None if x == '' else x),
+                'OE': self.oe.dataframes
             }
 
             return result
@@ -47,6 +48,7 @@ class Survey:
             self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'), index=False)
             self.questionaire.dataframes.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'), index=False)
             self.responsers.dataframes.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'), index=False)
+            self.oe.dataframes.to_csv(os.path.join(folder_path, 'OE.csv'), index=False)
 
         #spssformat: concat questioncode + scale -> spss question -> pivot
 
