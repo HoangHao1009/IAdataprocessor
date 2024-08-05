@@ -22,6 +22,7 @@ class ResponseData:
         Fact['answerScale'] = Fact['answerValues'].apply(lambda x: x['value']['scale'] if isinstance(x, dict) else x)
         Fact['answerdynamicExplodeText'] = Fact['answerValues'].apply(lambda x: x['value']['dynamicExplodeText'] if isinstance(x, dict) else x)
         Fact['answerValuesText'] = Fact['answerValues'].apply(lambda x: x['value']['text'] if isinstance(x, dict) else x)
+        Fact['answerValuesText'] = Fact['answerValuesText'].map(lambda x: None if (x == '' or x == 'N/A') else x)
         Fact.drop(['responseSet', 'answerValues'], axis=1, inplace=True)
         Fact.dropna(subset=['answerID'], inplace=True)
 
