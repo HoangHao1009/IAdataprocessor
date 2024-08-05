@@ -27,10 +27,10 @@ class Survey:
 
         if not folder_path:
             result = {
-                'dimResponser': self.responsers.dataframes.dimResponser.map(lambda x: np.nan if x == '' else x),
-                'dimQuestion': self.questionaire.dataframes.dimQuestion.map(lambda x: np.nan if x == '' else x),
-                'dimAnswer': self.questionaire.dataframes.dimAnswer.map(lambda x: np.nan if x == '' else x),
-                'Fact': self.responsers.dataframes.Fact.map(lambda x: np.nan if x == '' else x)
+                'dimResponser': self.responsers.dataframes.dimResponser.map(lambda x: None if x == '' else x),
+                'dimQuestion': self.questionaire.dataframes.dimQuestion.map(lambda x: None if x == '' else x),
+                'dimAnswer': self.questionaire.dataframes.dimAnswer.map(lambda x: None if x == '' else x),
+                'Fact': self.responsers.dataframes.Fact.map(lambda x: None if x == '' else x)
             }
 
             return result
