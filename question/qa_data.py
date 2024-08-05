@@ -24,8 +24,6 @@ class QuestionData:
             dimAnswer = root_df.loc[:, ['questionID', 'code', 'rows', 'answers']]
             dimAnswer['columns'] = None
 
-
-        dimAnswer = root_df.loc[:, dimAnswer_col]
         dimAnswer = dimAnswer.explode('rows').explode('columns').explode('answers')
 
         dimAnswer['matrixOption'] = dimAnswer['rows'].apply(lambda x: x['text'] if isinstance(x, dict) else x)
