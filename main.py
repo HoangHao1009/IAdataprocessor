@@ -36,7 +36,7 @@ class Survey:
             return result
             
         else:
-            self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimReponser.csv'))
+            self.responsers.dataframes.dimResponser.to_csv(os.path.join(folder_path, 'dimResponser.csv'))
             self.questionaire.dataframes.dimQuestion.to_csv(os.path.join(folder_path, 'dimQuestion.csv'))
             self.questionaire.dataframes.dimAnswer.to_csv(os.path.join(folder_path, 'dimAnswer.csv'))
             self.responsers.dataframes.Fact.to_csv(os.path.join(folder_path, 'Fact.csv'))
