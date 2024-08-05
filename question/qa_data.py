@@ -18,6 +18,13 @@ class QuestionData:
         except:
             dimQuestion = root_df.loc[:, ['questionID', 'blockID', 'type', 'text', 'code', 'orderNumber', 'required']]
 
+        try:
+            dimAnswer = root_df.loc[:, dimAnswer_col]
+        except:
+            dimAnswer = root_df.loc[:, ['questionID', 'code', 'rows', 'answers']]
+            dimAnswer['columns'] = None
+
+
         dimAnswer = root_df.loc[:, dimAnswer_col]
         dimAnswer = dimAnswer.explode('rows').explode('columns').explode('answers')
 
