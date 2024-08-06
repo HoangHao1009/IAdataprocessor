@@ -24,3 +24,11 @@ class OE:
         info_df = info_df.explode('processed')
         info_df.rename(columns={'answerValuesText': 'root', 'answerText': 'root'}, inplace=True)
         self.dataframes = pd.concat([self.dataframes, info_df])
+    
+    def reset_dataframes(self):
+        self.dataframes = pd.DataFrame({
+            'responseID': [],
+            'questionCode': [],
+            'root': [],
+            'processed': []
+        })
