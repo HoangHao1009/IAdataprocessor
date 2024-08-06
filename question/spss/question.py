@@ -163,9 +163,12 @@ class matrix(question):
         self.commands.extend(var_label_command + value_label_command)
 
 class text:
+    #var_label
     pass
 
 class numeric:
+    #var_label
+    #auto calculate -> create scale -> mean - var 
     pass
 
 
